@@ -1,0 +1,24 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+
+h1 {
+    font-family: 'PT Sans Narrow', sans-serif;
+    font-weight: 400;
+}
+
+.navbar {  
+display:block; 
+color: white; 
+background-color: #392F5A;
+margin: 0 auto;
+font-size: larger;
+padding: 5px; 
+
+}
+
+.sidebar  {
+    display: grid;
+    justify-content: left;
+}
