@@ -1,6 +1,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   background-color: #FFF1D0;
+  color: black; 
 }
 
 h1 {
@@ -19,6 +20,7 @@ ul {
 
 li {
   list-style: none;
+  color: black; 
 }
 
 .main {
@@ -47,23 +49,24 @@ li {
 /* Nav Bar Vertical  */
 
 .sidebar {
+  color: black; 
   display: block;
   flex-direction: column;
   justify-content: space-between;
   grid-area: sidebar;
   padding: 10px 5px;
   font-size: larger;
-  background-color:#086788 ;
+  background-color: floralwhite ;
   height: 100%;
   
 }
 
 .nav-link {
    display: flex;
+   color: black; 
    flex-direction: column;
    justify-content: space-between; 
 font-weight: 500;
-   color: white; 
    padding: 15px; 
    margin: 5px; 
 
@@ -72,8 +75,8 @@ font-weight: 500;
 
 .nav-item .nav-link:hover {
 border-left: 5px solid #F0C808;
-text-decoration: underline;
-color: floralwhite;
+color: black; 
+text-decoration: none;
 }
 
 
