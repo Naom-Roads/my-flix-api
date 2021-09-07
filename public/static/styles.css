@@ -1,6 +1,6 @@
 body {
   font-family: "Open Sans", sans-serif;
-  background-color: #FFF1D0;
+  background-color: floralwhite;
   color: black; 
 }
 
@@ -91,6 +91,27 @@ text-decoration: none;
   margin: 10px;
   height: 100%;
 }
+
+table {
+  border: 2px solid black;
+  padding: 20px; 
+  margin: 0 auto; 
+}
+
+th {
+  border: 2px solid black; 
+  padding: 20px; 
+  text-align: center;
+  font-weight: 800;
+  font-size: larger;
+}
+
+td {
+  border: 1px solid black; 
+  padding: 5px; 
+}
+
+
 
 
 .footer {
