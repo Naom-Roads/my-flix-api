@@ -1,138 +1,148 @@
 // app.METHOD(PATH, HANDLER)
 
-const express = require('express'),
-    morgan = require('morgan');
-const { title } = require('process');
+const express = require('express');
+const morgan = require('morgan');
+const { id } = require('process');
 uuid = require('uuid');
 const app = express();
 
+let users = [ 
+    {
+        id: 1,
+        name: 'Naomi',
+        username: 'FirstUser',
+        email: 'nrrodrig@gmail.com',
+        movies: [ 1,  2 ]
+    }
+];
 
 
-const topMovies = [{
-    id: 1,
-    title: 'Embrace of the Serpent',
-    description: '',
-    director: 'Ciro Guerra',
-    genre: '',
-    featured: '',
-    image: 'goes here'
+let movies = [
+    {
+        id: 1,
+        title: 'Embrace of the Serpent',
+        description: 'This is a foreign film',
+        director: 'Ciro Guerra',
+        genre: 'Drama',
+        featured: '',
+        image: 'goes here'
 
-},
-{
+    },
+    {
 
-    id: 2,
-    title: 'Jojo Rabbit',
-    description: '',
-    director: 'Taika Waititi',
-    genre: '',
-    featured: '',
-    image: 'goes here'
-
-},
-{
-    id: 3,
-    title: 'The Darjeeling Limited',
-    description: '',
-    director: 'Wes Anderson',
-    genre: '',
-    featured: '',
-    image: 'goes here'
-
-},
-{
-
-    id: 4,
-    title: 'Get Out',
-    description: '',
-    director: 'Jordan Peele',
-    genre: '',
-    featured: '',
-    image: 'goes here'
-
-},
-{
-    id: 5,
-    title: 'Hereditary',
-    description: '',
-    director: 'Ari Aster',
-    genre: '',
-    featured: '',
-    image: 'goes here'
-
-
-},
-{
-    id: 6,
-    title: 'Midsommar',
-    description: '',
-    irector: 'Ari Aster'
+        id: 2,
+        title: 'Jojo Rabbit',
+        description: '',
+        director: 'Taika Waititi',
         genre: '',
-    featured: '',
-    image: 'goes here'
-},
-{
-    id: 7,
-    title: 'Princess Mononoke',
-    description: '',
-    director: 'Hayao Miyazaki',
-    genre: '',
-    featured: '',
-    image: 'goes here'
+        featured: '',
+        image: 'goes here'
 
-
-},
-{
-    id: 8,
-    title: 'Akira',
-    description: '',
-    director: 'Katsuhiro Otomo'
+    },
+    {
+        id: 3,
+        title: 'The Darjeeling Limited',
+        description: '',
+        director: 'Wes Anderson',
         genre: '',
-    featured: '',
-    image: 'goes here'
+        featured: '',
+        image: 'goes here'
 
-},
+    },
+    {
 
-{
-    id: 9,
-    title: 'Paprika',
-    description: '',
-    director: 'Satoshi Kon'
+        id: 4,
+        title: 'Get Out',
+        description: '',
+        director: 'Jordan Peele',
         genre: '',
-    featured: '',
-    image: 'goes here'
+        featured: '',
+        image: 'goes here'
+
+    },
+    {
+        id: 5,
+        title: 'Hereditary',
+        description: '',
+        director: 'Ari Aster',
+        genre: '',
+        featured: '',
+        image: 'goes here'
 
 
-},
-{
-    id: 10,
-    title: 'Blade Runner',
-    description: '',
-    director: 'Ridley Scott',
-    genre: '',
-    featured: '',
-    image: 'goes here'
+    },
+    {
+        id: 6,
+        title: 'Midsommar',
+        description: '',
+        irector: 'Ari Aster',
+        genre: '',
+        featured: '',
+        image: 'goes here'
+    },
+    {
+        id: 7,
+        title: 'Princess Mononoke',
+        description: '',
+        director: 'Hayao Miyazaki',
+        genre: '',
+        featured: '',
+        image: 'goes here'
+
+
+    },
+    {
+        id: 8,
+        title: 'Akira',
+        description: '',
+        director: 'Katsuhiro Otomo',
+        genre: '',
+        featured: '',
+        image: 'goes here'
+
+    },
+
+    {
+        id: 9,
+        title: 'Paprika',
+        description: '',
+        director: 'Satoshi Kon',
+        genre: '',
+        featured: '',
+        image: 'goes here'
+
+
+    },
+    {
+        id: 10,
+        title: 'Blade Runner',
+        description: '',
+        director: 'Ridley Scott',
+        genre: '',
+        featured: '',
+        image: 'goes here'
 
 
 
-},
-{
-    id: 11,
-    title: 'Aliens',
-    description: '',
-    director: 'Ridley Scott',
-    genre: '',
-    featured: '',
-    image: 'goes here'
+    },
+    {
+        id: 11,
+        title: 'Aliens',
+        description: '',
+        director: 'Ridley Scott',
+        genre: '',
+        featured: '',
+        image: 'goes here'
 
 
-},
+    },
 ];
 
 function addMovie(body, res) {
     let newMovie = body;
 
-    if (!newMovie.title) {
-        const message = "Missing Title in request body";
+    if (!newMovie) {
+        const message = "Missing body";
         res.status(400).send(message);
     } else {
         newMovie.id = uuid.v4();
@@ -143,9 +153,7 @@ function addMovie(body, res) {
 }
 
 
-app.use(express.urlencoded({
-    extended: true
-}));
+app.use(express.json());
 
 app.use(morgan('common'));
 
@@ -167,41 +175,45 @@ app.get('/documentation', (req, res) => {
 // Get List of All Movies
 
 app.get('/movies', (req, res) => {
-    res.json(topMovies);
+    res.json(movies);
 });
 
-// Gets data for one movie by title
+// Gets data for one movie by id
 
-app.get('/movies/:title', (req, res) => {
-    res.json(movies.find((movie) => { return movie.title === req.params.title }));
+app.get('/movies/:id', (req, res) => {
+    res.json(movies.find((movie) => { return movie.id == req.params.id }));
 });
 
 // Gets data about the director
 
-app.get('/movies/:title/director', (req, res) => {
-    const movie = movies.find((movie) => { return movie.title === req.params.title });
+app.get('/movies/:id/director', (req, res) => {
+    const movie = movies.find((movie) => { return movie.id == req.params.id });
 
     if (movie) {
         if (movie.director) {
             res.json(movie.director);
         } else {
-            res.status(404).send(`Director of ${movie.title} does not exist`)
+            res.status(404).send(`Director of ${movie.id} does not exist`)
         }
     } else {
-        res.status(404).send(`${req.params.title} not found`)
+        res.status(404).send(`${req.params.id} not found`)
     }
 });
 
 
 // Gets data about the genre
 
-app.get('/genres/:name', (req, res) => {
-    const genre = genres.find((genre) => { return genre.name === req.params.name })
+app.get('/movies/:id/genre', (req, res) => {
+    const movie = movies.find((movie) => { return movie.id == req.params.id; });
 
-    if (genre) {
-        res.json(genre);
+    if (movie) {
+        if (movie.genre) {
+            res.json(movie.genre);
+        } else {
+            res.status(404).send('Genre not found');
+        }
     } else {
-        res.status(404).send('Genre not found')
+        res.status(404).send(`Movie not found`)
     }
 });
 
@@ -217,12 +229,12 @@ app.post('/movies', (req, res) => {
 
 app.delete('/movies/:id', (req, res) => {
     let movies = movies.find((movie) => {
-        return movie.id === req.params.id
+        return movie.id == req.params.id
     });
 
     if (movie) {
         movies = movies.filter((_movie) => {
-            return _movie.id !== req.params.id
+            return _movie.id != req.params.id
         });
         res.status(201).send(`Movie with ${req.params.id} was deleted`)
     }
@@ -233,23 +245,40 @@ app.delete('/movies/:id', (req, res) => {
 
 app.post('/users', (req, res) => {
     let newUser = req.body;
+    console.log(newUser);
 
-    if (!newUser.name) {
-        let message = 'Name required'
+    if (!newUser) {
+        let message = 'All User Fields Required'
         return res.status(400).send(message);
+    } else {
+        newUser.id = uuid.v4();
+        users.push(newUser);
+        res.status(201).send(`User ${newUser.name} was succesfully created`);
     }
-    if (!newUser.email) {
-        let message = 'Email Required'
-        return res.satus(400).send(message);
-    }
-
-    newUser.id = uuid.v4();
-    users.push(newUser);
-    res.status(201).send(newUser);
-
 });
 
 // Allows Users to update Profile 
+
+
+app.patch('/users/:id/username', (req, res) => {
+    const username = req.body.username
+    if (username) {
+        const user = users.find((user) => {
+            return user.id == req.params.id;
+        });
+
+        if (user) {
+            user.username = req.body.username
+            res.status(200).send(user);
+         } else {
+             res.status(404).send(`User not found`);
+         } 
+
+    } else {
+        res.status(400).send(`Username not provided`)
+    }
+});
+
 
 
 
@@ -257,24 +286,21 @@ app.post('/users', (req, res) => {
 
 app.put('/users/:id/movies', (req, res) => {
     const user = users.find((user) => {
-        return user.id === req.params.id;
+        return user.id == req.params.id;
     });
-    if (!req.body.title) {
-        const message = 'Missing movie title in request body';
-        return res.status(400).send(message);
-    }
+
 
     if (user) {
         const movie = movies.find((movie) => {
-            return movie.title === req.body.title;
+            return movie.id == req.body.id;
         });
 
         if (!movie) {
             addMovie(req.body, res);
         } // Adds movie if movie does not already exist 
 
-        user.movies.push(req.body.title);
-        res.status(201).send(`${req.body.title} was added to ${user.name} movie list`);
+        user.movies.push(req.body.id);
+        res.status(201).send(`${req.body.id} was added to ${user.name} movie list`);
 
     } else {
         res.status(404).send(`User not found`);
@@ -284,21 +310,21 @@ app.put('/users/:id/movies', (req, res) => {
 
 // Allows user to delete movie 
 
-app.delete('/users/:id/movies/:title', (req, res) => {
+app.delete('/users/:id/movies/:id', (req, res) => {
     const user = users.find((user) => {
-        return user.id === req.params.id;
+        return user.id == req.params.id;
     });
     if (user) {
         const movie = movies.find((movie) => {
-            return movie.id === req.params.id;
-
+            return movie.id == req.params.id;
+        
         });
 
         if (movie) {
             movies = movies.filter((_movie) => {
-                return _movie.id !== req.params.id
+                return _movie.id != req.params.id
             });
-            res.status(204).send(`Movie with ${req.params.id} was deleted`)
+            res.status(200).send(`Movie with id:${req.params.id} was deleted`);
         } else {
             res.status(404).send(`Movie not found`);
         }
@@ -311,15 +337,15 @@ app.delete('/users/:id/movies/:title', (req, res) => {
 
 app.delete('/users/:id', (req, res) => {
     const user = users.find((user) => {
-        return user.id === req.params.id;
+        return user.id == req.params.id;
     });
 
     if (user) {
         users = users.filter((_user) => {
-            return _user.id !== req.params.id;
+            return _user.id != req.params.id;
         });
 
-        return res.status(204).send(`User with ${req.params.id} was deleted`);
+        return res.status(200).send(`User with ${req.params.id} was deleted`);
 
     } else {
         res.status(404).send(`User not found`);
