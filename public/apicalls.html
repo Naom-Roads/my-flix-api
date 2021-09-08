@@ -44,7 +44,7 @@
         <tr>
 
             <td>Get data about a single movie</td>
-            <td>/movies/[title]</td>
+            <td>/movies/[id]/title</td>
             <td>GET</td>
             <td>None</td>
             <td>A JSON object holding data about a single movie, containing an ID, name, image, description, genre,
@@ -69,7 +69,7 @@
         <tr>
 
             <td>Get data about director of single movie</td>
-            <td>/movies/[title]/[name]</td>
+            <td>/movies/[id]/director</td>
             <td>GET</td>
             <td>None</td>
             <td>A JSON object holding data about a single director(containing an ID, name, bio, birth year, death year)
@@ -90,7 +90,7 @@
         <tr>
 
             <td>Get data about a single genre</td>
-            <td>/movies/[id]/[genre]</td>
+            <td>/genres/[id]</td>
             <td>GET</td>
             <td>None</td>
             <td>A JSON object holding data about a single genre(description) by name/title(e.g "Thriller")
@@ -180,7 +180,7 @@
 
         <tr>
             <td>Allows users to update their profile</td>
-            <td>users/[ID]</td>
+            <td>users/[id]</td>
             <td>PUT</td>
             <td>None</td>
             <td>A text message indicating that their movie list has been updated</td>
@@ -189,7 +189,7 @@
 
         <tr>
             <td>Allows users to add a movie to their list of favorites</td>
-            <td>users/[ID]</td>
+            <td>users/[id]</td>
             <td>PUT</td>
             <td>Request Format</td>
             <td>Response Format</td>
@@ -204,8 +204,8 @@
 
         <tr>
             <td>Remove a Movie by ID</td>
-            <td>/movies/[ID]</td>
-            <td>Delete</td>
+            <td>/movies/[id]</td>
+            <td>DELETE</td>
             <td>None</td>
             <td>A text message indicating whether the student was succussfully removed</td>
         </tr>

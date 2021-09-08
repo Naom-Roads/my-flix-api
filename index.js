@@ -8,58 +8,122 @@ const app = express();
 
 
 const topMovies = [{
-
+        id: 1,
         title: 'Embrace of the Serpent',
-        director: 'Ciro Guerra'
+        description: '' ,
+        director: 'Ciro Guerra',
+        genre:  '',
+        featured: '',
+        image: 'goes here'
 
     },
     {
+
+        id: 2,
         title: 'Jojo Rabbit',
-        director: 'Taika Waititi'
+        description: '',
+        director: 'Taika Waititi',
+        genre: '' ,
+        featured: '' ,
+        image: 'goes here'
+        
     },
     {
+        id: 3,
         title: 'The Darjeeling Limited',
-        director: 'Wes Anderson'
+        description: '',
+        director: 'Wes Anderson',
+        genre: '',
+        featured: '' ,
+        image: 'goes here'
+        
     },
     {
+
+        id: 4,
         title: 'Get Out', 
-        director: 'Jordan Peele'
+        description: '',
+        director: 'Jordan Peele',
+        genre: '',
+        featured: '' ,
+        image: 'goes here'
+        
     },
     {
+        id: 5,
         title: 'Hereditary', 
-        director: 'Ari Aster'
+        description: '',
+        director: 'Ari Aster',
+        genre: '',
+        featured: '' ,
+        image: 'goes here'
+        
+        
     },
     {
+        id: 6,
         title: 'Midsommar',
-        director: 'Ari Aster'
+        description: '',
+        irector: 'Ari Aster'
+        genre: '',
+        featured: '' ,
+        image: 'goes here'
     },
     {
+        id: 7,
         title: 'Princess Mononoke', 
-        director: 'Hayao Miyazaki'
+        description: '',
+        director: 'Hayao Miyazaki',
+        genre: '',
+        featured: '' ,
+        image: 'goes here'
+       
+        
     },
-    {
+    {   
+        id: 8,
         title:'Akira',
+        description: '',
         director: 'Katsuhiro Otomo'
+        genre: '',
+        featured: '' ,
+        image: 'goes here'
+        
     },
+
     {
+        id: 9,
         title: 'Paprika',
+        description: '',
         director: 'Satoshi Kon'
+        genre: '',
+        featured: '' ,
+        image: 'goes here'
+       
+        
     },
     {
+        id: 10,
         title: 'Blade Runner', 
-        director: 'Ridley Scott'
+        description: '',
+        director: 'Ridley Scott',
+        genre: '',
+        featured: '' ,
+        image: 'goes here'
+       
+       
+       
     },
     {
-        title: 'Aliens',
-        director: 'Ridley Scott'
-    },
-    {
-        title: 'The Shinning',
-        director: 'Stanley Kubrick'
-    },
-    {
-        title: 'Apocolypse Now',
-        director: 'Francis Ford Coppola'
+        id: 11,
+        title: 'Aliens', 
+        description: '',
+        director: 'Ridley Scott',
+        genre: '',
+        featured: '' ,
+        image: 'goes here'
+       
+        
     },
 ];
 
@@ -85,9 +149,43 @@ app.get('/documentation', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname});
 });
 
+// Get List of All Movies
+
 app.get('/movies', (req, res) => {
     res.json(topMovies);
 });
+
+// Gets data for one movie by title
+
+app.get('/movies/[id]/:title', (req, res) => {
+    res.json(movies.find((movie) => 
+    { return movie.title === req.params.title}));
+});
+
+// Gets data about the director
+
+app.get('/movies/[id]/:director', (req, res) => {
+    res.json(movies.find((director) =>
+{ return movie.director === req.params.director})); 
+});
+
+
+app.get('/genres')
+
+
+
+
+
+
+
+
+
+
+
+
+// USERS RES AND REQ START HERE 
+
+
 
 app.listen(8080, () => {
     console.log('App is listening on port 8080');
