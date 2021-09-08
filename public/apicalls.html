@@ -90,7 +90,7 @@
         <tr>
 
             <td>Get data about a single genre</td>
-            <td>/genres/[id]</td>
+            <td>/genres/genre</td>
             <td>GET</td>
             <td>None</td>
             <td>A JSON object holding data about a single genre(description) by name/title(e.g "Thriller")
@@ -115,7 +115,7 @@
             <td>A JSON Object holding data about the movie to add, in this structure:
                 <pre>
                 <code>
-               {    name: "Name of Movie" 
+               {    title: "Movie Title" 
                     description: 
                     director: 
                     genre: 
@@ -130,7 +130,7 @@
                     <code>
                     {
                      id: 11; 
-                     name: "Name of Movie" 
+                     title: "Movie Title" 
                      description: 
                      director: 
                      genre: 
@@ -145,7 +145,7 @@
 
         <tr>
             <td>Allow new user to register</td>
-            <td>/users/new</td>
+            <td>/users/td>
             <td>POST</td>
             <td>A JSON Object holding data about the user to add structured like:
                 <pre>
@@ -189,7 +189,7 @@
 
         <tr>
             <td>Allows users to add a movie to their list of favorites</td>
-            <td>users/[id]</td>
+            <td>users/[id]/movies</td>
             <td>PUT</td>
             <td>Request Format</td>
             <td>Response Format</td>
