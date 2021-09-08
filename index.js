@@ -253,7 +253,7 @@ app.post('/users', (req, res) => {
 
 
 
-// Allows users to update movie list
+// Allows users to add movie list
 
 app.put('/users/:id/movies', (req, res) => {
     const user = users.find((user) => {
@@ -263,16 +263,16 @@ app.put('/users/:id/movies', (req, res) => {
         const message = 'Missing movie title in request body';
         return res.status(400).send(message);
     }
-   
+
     if (user) {
         const movie = movies.find((movie) => {
             return movie.title === req.body.title;
         });
-    
+
         if (!movie) {
-            addMovie(req.body, res); 
-        } // Adds movie if movie does not already exist to happen in the background 
-    
+            addMovie(req.body, res);
+        } // Adds movie if movie does not already exist 
+
         user.movies.push(req.body.title);
         res.status(201).send(`${req.body.title} was added to ${user.name} movie list`);
 
@@ -281,6 +281,50 @@ app.put('/users/:id/movies', (req, res) => {
     }
 });
 
+
+// Allows user to delete movie 
+
+app.delete('/users/:id/movies/:title', (req, res) => {
+    const user = users.find((user) => {
+        return user.id === req.params.id;
+    });
+    if (user) {
+        const movie = movies.find((movie) => {
+            return movie.id === req.params.id;
+
+        });
+
+        if (movie) {
+            movies = movies.filter((_movie) => {
+                return _movie.id !== req.params.id
+            });
+            res.status(204).send(`Movie with ${req.params.id} was deleted`)
+        } else {
+            res.status(404).send(`Movie not found`);
+        }
+    } else {
+        res.status(404).send(`User not found`);
+    }
+});
+
+// Allows user to deregister 
+
+app.delete('/users/:id', (req, res) => {
+    const user = users.find((user) => {
+        return user.id === req.params.id;
+    });
+
+    if (user) {
+        users = users.filter((_user) => {
+            return _user.id !== req.params.id;
+        });
+
+        return res.status(204).send(`User with ${req.params.id} was deleted`);
+
+    } else {
+        res.status(404).send(`User not found`);
+    }
+});
 
 app.listen(8080, () => {
     console.log('App is listening on port 8080');
