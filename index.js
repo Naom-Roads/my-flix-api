@@ -1,18 +1,19 @@
 // app.METHOD(PATH, HANDLER)
 
 const express = require('express');
+const { add } = require('lodash');
 const morgan = require('morgan');
 const { id } = require('process');
 uuid = require('uuid');
 const app = express();
 
-let users = [ 
+let users = [
     {
         id: 1,
         name: 'Naomi',
         username: 'FirstUser',
         email: 'nrrodrig@gmail.com',
-        movies: [ 1,  2 ]
+        movies: [1, 2]
     }
 ];
 
@@ -138,19 +139,35 @@ let movies = [
     },
 ];
 
-function addMovie(body, res) {
-    let newMovie = body;
+// Movie Validation and Adding functions
 
-    if (!newMovie) {
-        const message = "Missing body";
-        res.status(400).send(message);
-    } else {
-        newMovie.id = uuid.v4();
-        movies.push(newMovie);
-        res.status(201).send(newMovie);
+function validateMovie(req, res, next) {
+    let movie = req.body;
+    let errors = [];
+
+    if (!movie.title) {
+        errors.push("Title is required");
     }
 
+    if (!movie.description) {
+        errors.push("Description is required");
+    }
+
+    if (errors.length > 0) {
+        res.status(400).send(errors);
+    } else {
+        next();
+    }
 }
+
+
+function addMovie(movie) {
+    let newMovie = movie;
+    newMovie.id = uuid.v4();
+    movies.push(newMovie);
+
+}
+
 
 
 app.use(express.json());
@@ -168,9 +185,16 @@ app.get('/', (req, res) => {
     res.send('Welcome');
 });
 
+// Main Page
+
 app.get('/documentation', (req, res) => {
     res.sendFile('public/documentation.html', { root: __dirname });
 });
+
+
+
+
+
 
 // Get List of All Movies
 
@@ -219,7 +243,7 @@ app.get('/movies/:id/genre', (req, res) => {
 
 // Add a movie 
 
-app.post('/movies', (req, res) => {
+app.post('/movies', validateMovie, (req, res) => {
     addMovie(req.body, res);
 
 });
@@ -236,7 +260,9 @@ app.delete('/movies/:id', (req, res) => {
         movies = movies.filter((_movie) => {
             return _movie.id != req.params.id
         });
-        res.status(201).send(`Movie with ${req.params.id} was deleted`)
+        res.status(201).send(`Movie with ${req.params.id} was deleted`);
+    } else {
+        res.status(404).send(`Movie not found`);
     }
 });
 
@@ -270,9 +296,9 @@ app.patch('/users/:id/username', (req, res) => {
         if (user) {
             user.username = req.body.username
             res.status(200).send(user);
-         } else {
-             res.status(404).send(`User not found`);
-         } 
+        } else {
+            res.status(404).send(`User not found`);
+        }
 
     } else {
         res.status(400).send(`Username not provided`)
@@ -284,7 +310,7 @@ app.patch('/users/:id/username', (req, res) => {
 
 // Allows users to add movie list
 
-app.put('/users/:id/movies', (req, res) => {
+app.put('/users/:id/movies', validateMovie, (req, res) => {
     const user = users.find((user) => {
         return user.id == req.params.id;
     });
@@ -317,7 +343,7 @@ app.delete('/users/:id/movies/:id', (req, res) => {
     if (user) {
         const movie = movies.find((movie) => {
             return movie.id == req.params.id;
-        
+
         });
 
         if (movie) {
