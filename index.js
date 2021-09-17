@@ -253,7 +253,7 @@ app.patch("/users/:username", (req, res) => {
 
 // Allows users to add movie list
 
-app.post('/users/:username/movies/:movieId', (req, res) => {
+app.post("/users/:username/movies/:movieId", (req, res) => {
     Users.findOneAndUpdate({ username: req.params.username }, {
        $addToSet: { favoritemovies: req.params.movieId }
      },

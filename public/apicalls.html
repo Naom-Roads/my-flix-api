@@ -206,25 +206,25 @@
         <!-- Delete -->
 
         <tr>
-            <td>Remove a Movie by ID</td>
-            <td>/movies/[id]</td>
+            <td>Remove a Movie by Title</td>
+            <td>/movies/:title</td>
             <td>DELETE</td>
             <td>None</td>
             <td>A text message indicating whether the student was succussfully removed</td>
         </tr>
 
         <tr>
-            <td>Allows users to remove a movie from their list(showing that a movie has been removed)</td>
-            <td>/users/[id]/movies/[title]</td>
+            <td>Allows users to remove a movie from their list</td>
+            <td>/users/:username/movies/:movieId</td>
             <td>DELETE</td>
             <td>Request Format</td>
-            <td>A text message indicating the movie was removed from the list</td>
+            <td>A text message indicating the movie was removed from the list or that the movie was not found</td>
 
         </tr>
 
         <tr>
-            <td>Allows users to deregister(showing a text that the user email has been removed)</td>
-            <td>URL</td>
+            <td>Allows users to deregister and shows the user was removed</td>
+            <td>/users/:username</td>
             <td>DELETE</td>
             <td>Request Format</td>
             <td>A text message indicating user email has been removed</td>
