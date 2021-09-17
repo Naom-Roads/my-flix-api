@@ -78,10 +78,10 @@ app.get("/movies/:title", (req, res) => {
 
 // Gets data about the director
 
-app.get("/movies/title/:director", (req, res) => {
-    Movies.findOne({ director: req.params.director })
-        .then((director) => {
-            res.json(director);
+app.get("/movies/:id/director", (req, res) => {
+    Movies.findById(req.params.id)
+        .then((movie) => {
+            res.json(movie.director);
         })
         .catch((err) => {
             console.error(err);
@@ -91,10 +91,10 @@ app.get("/movies/title/:director", (req, res) => {
 
 // Gets data about the genre
 
-app.get("/movies/title/:genres", (req, res) => {
-    Movies.find({ genres: req.params.genres })
-        .then((genre) => {
-            res.json(genre);
+app.get("/movies/:id/genres", (req, res) => {
+    Movies.findById(req.params.id)
+        .then((movie) => {
+            res.json(movie.genres);
         })
         .catch((err) => {
             console.error(err);
@@ -105,12 +105,13 @@ app.get("/movies/title/:genres", (req, res) => {
 // Add a movie
 
 app.post("/movies", (req, res) => {
-    Movies.findOne({ movies: req.body.movie })
+    Movies.findOne({ title: req.params.title })
         .then((movie) => {
             if (movie) {
                 return res.status(400).send(req.body.movie + " already exists");
             } else {
-                Movies.create({
+                Movies
+                 .create({
                     title: req.body.title,
                     description: req.body.description,
                     director: req.body.director,
@@ -183,17 +184,17 @@ app.get("/users/:username", (req, res) => {
 // Allows new User to be added
 
 app.post("/users", (req, res) => {
-    Users.findOne({ username: req.body.username })
+    Users.findOne({ username: req.params.username })
         .then((user) => {
             if (user) {
-                return res.status(400).send(req.body.username + "already exists");
+                return res.status(400).send(req.body.username + " already exists");
             } else {
-                Users.create({
-                    Username: req.body.username,
-                    Password: req.body.password,
-                    Email: req.body.password,
-                    Email: req.body.email,
-                    Birthday: req.body.birthday,
+                Users
+                    .create({
+                    username: req.body.username,
+                    password: req.body.password,
+                    email: req.body.email,
+                    birthday: req.body.birthday
                 })
                     .then((user) => {
                         res.status(201).json(user);
@@ -252,33 +253,30 @@ app.patch("/users/:username", (req, res) => {
 
 // Allows users to add movie list
 
-app.post("/users/:username/movies/:movieID", (req, res) => {
-    Users.findOneAndUpdate({ username: req.params.username },
-        {
-            $push: { favoriteMovies: req.params.movieID },
-        },
-
-        { new: true },
-        (err, updatedUser) => {
-            if (err) {
-                console.error(err);
-                res.status(500).send("Error: " + err);
-            } else {
-                res.json(updatedUser);
-            }
-        }
-    );
-});
+app.post('/users/:username/movies/:movieId', (req, res) => {
+    Users.findOneAndUpdate({ username: req.params.username }, {
+       $addToSet: { favoritemovies: req.params.movieId }
+     },
+     { new: true }, // This line makes sure that the updated document is returned
+    (err, updatedUser) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error: ' + err);
+      } else {
+        res.json(updatedUser);
+      }
+    });
+  });
 
 // Allows user to delete movie
 
-app.delete("/users/:username/favoritemovies/:title", (req, res) => {
-    Users.findOneAndUpdate({ favoritemovies: req.params.title })
+app.delete("/users/:username/movies/:movieId", (req, res) => {
+    Users.findOneAndRemove({ favoritemovies: req.params.movieId})
         .then((movie) => {
             if (!movie) {
-                res.status(400).send(req.params.title + " not found");
+                res.status(400).send(req.params.movieId + " not found");
             } else {
-                res.status(200).send(req.params.title + " was removed from list.");
+                res.status(200).send(req.params.movieId + " was removed from list.");
             }
         })
         .catch((err) => {

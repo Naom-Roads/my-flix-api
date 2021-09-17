@@ -68,8 +68,8 @@
 
         <tr>
 
-            <td>Get data about director of single movie</td>
-            <td>/movies/title/:director</td>
+            <td>Get data about director from a single movie using movie id</td>
+            <td>"/movies/:id/director"</td>
             <td>GET</td>
             <td>None</td>
             <td>A JSON object holding data about a single director(containing an name, bio, birth year, death year)
@@ -77,9 +77,9 @@
                 <code>
                 {
                  name: "Ciro Guerra"; 
-                 Bio: "Ciro Guerra was born on February 6th 1981 in Rio de Oro, Cesar, Colombia"
-                 Birthyear: 1981 - Present; 
-                 Deathyear: (If applicable)
+                 bio: "Ciro Guerra was born on February 6th 1981 in Rio de Oro, Cesar, Colombia"
+                 birthyear: 1981 - Present; 
+                 deathyear: (If applicable)
                }  
             </code>
             </pre>
@@ -89,15 +89,14 @@
 
         <tr>
 
-            <td>Get data about a single genre</td>
-            <td>/movies/title/:genres</td>
+            <td>Get data about a genres from single movie id</td>
+            <td>/movies/:id/genres</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about a single genre(description) by name/title(e.g "Thriller")
+            <td>A JSON object with a list of a movie's genres including name and description of each genre
                 <pre>
                 <code>
                 {
-                 id: 1; 
                  genre: "Thriller"
                  description: "Action Packed"
                }  
@@ -129,7 +128,7 @@
                 <pre>
                     <code>
                     {
-                        ObjectID: 
+                        _id: 
                         title: req.body.title,
                         description: req.body.description,
                         director: req.body.director,
@@ -164,7 +163,7 @@
                 <pre>
                 <code>
                     {
-                        ObjectID: 
+                        _id: 
                         Username: req.body.username,
                     Password: req.body.password,
                     Email: req.body.password,
@@ -195,7 +194,7 @@
             <td>Allows users to add a movie to their list of favorites</td>
             <td>/users/:username/movies/:movieID</td>
             <td>PUT</td>
-            <td>Request Format</td>
+            <td>Inserts movie into json document containing favoritemovies</td>
             <td>Response Format</td>
 
         </tr>
