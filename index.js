@@ -41,13 +41,13 @@ app.get("/documentation", (req, res) => {
 //Index Page
 
 app.get("/documentation", (req, res) => {
-    res.render("public/documentation");
+    res.send("public/documentation");
 });
 
 // API CALLS TABLE PAGE
 
 app.get("/apicalls", (req, res) => {
-    res.render("documentation/apicalls");
+    res.send("public/apicalls");
 });
 
 // Get List of All Movies
@@ -252,9 +252,8 @@ app.patch("/users/:username", (req, res) => {
 
 // Allows users to add movie list
 
-app.post("/users/:username/movies/:movieID", validateMovie, (req, res) => {
-    Users.findOneAndUpdate(
-        { username: req.params.username },
+app.post("/users/:username/movies/:movieID", (req, res) => {
+    Users.findOneAndUpdate({ username: req.params.username },
         {
             $push: { favoriteMovies: req.params.movieID },
         },
@@ -273,7 +272,7 @@ app.post("/users/:username/movies/:movieID", validateMovie, (req, res) => {
 
 // Allows user to delete movie
 
-app.delete("/users/username/favoritemovies/title", (req, res) => {
+app.delete("/users/:username/favoritemovies/:title", (req, res) => {
     Users.findOneAndUpdate({ favoritemovies: req.params.title })
         .then((movie) => {
             if (!movie) {

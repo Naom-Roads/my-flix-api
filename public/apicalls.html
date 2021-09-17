@@ -44,15 +44,15 @@
         <tr>
 
             <td>Get data about a single movie</td>
-            <td>/movies/[id]</td>
+            <td>/movies/:title</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about a single movie, containing an ID, name, image, description, genre,
-                director, featured
+            <td>A JSON object holding data about a single movie, containing an ObjectID, name, image, description, genres,
+                director, image and whether the movie is featured
                 <pre>
                 <code>
                 {
-                 id: 1; 
+                 ObjectID: 
                  title: "Embrace of the Serpent" 
                  description: 
                  director: 
@@ -69,17 +69,17 @@
         <tr>
 
             <td>Get data about director of single movie</td>
-            <td>/movies/[id]/director</td>
+            <td>/movies/title/:director</td>
             <td>GET</td>
             <td>None</td>
-            <td>A JSON object holding data about a single director(containing an ID, name, bio, birth year, death year)
+            <td>A JSON object holding data about a single director(containing an name, bio, birth year, death year)
                 <pre>
                 <code>
                 {
-                 id: 1; 
                  name: "Ciro Guerra"; 
                  Bio: "Ciro Guerra was born on February 6th 1981 in Rio de Oro, Cesar, Colombia"
-                 Years: 1981 - Present; 
+                 Birthyear: 1981 - Present; 
+                 Deathyear: (If applicable)
                }  
             </code>
             </pre>
@@ -90,7 +90,7 @@
         <tr>
 
             <td>Get data about a single genre</td>
-            <td>/movies/[id]/genre</td>
+            <td>/movies/title/:genres</td>
             <td>GET</td>
             <td>None</td>
             <td>A JSON object holding data about a single genre(description) by name/title(e.g "Thriller")
@@ -115,27 +115,27 @@
             <td>A JSON Object holding data about the movie to add, in this structure:
                 <pre>
                 <code>
-               {    title: "Movie Title" 
-                    description: 
-                    director: 
-                    genre: 
-                    featured:
-                    image: 
+                {   title: req.body.title,
+                    description: req.body.description,
+                    director: req.body.director,
+                    genres: req.body.genres,
+                    imageurl: req.body.imageurl,
+                    featured: req.body.featured,
                 }
             </code> 
         </pre>
             </td>
-            <td>A JSON object holding data about the movie that was added, including ID:
+            <td>A JSON object holding data about the movie that was added, including ObjectID:
                 <pre>
                     <code>
                     {
-                     id: 11; 
-                     title: "Movie Title" 
-                     description: 
-                     director: 
-                     genre: 
-                     featured:
-                     image: 
+                        ObjectID: 
+                        title: req.body.title,
+                        description: req.body.description,
+                        director: req.body.director,
+                        genres: req.body.genres,
+                        imageurl: req.body.imageurl,
+                        featured: req.body.featured,
                    }  
                 </code>
                 </pre>
@@ -151,25 +151,29 @@
                 <pre>
                     <code>
                         {
-                            name: 
-                            username:
-                            email: 
+                            Username: req.body.username,
+                            Password: req.body.password,
+                            Email: req.body.password,
+                            Email: req.body.email,
+                            Birthday: req.body.birthday,
                         }
                     </code>
                 </pre>
             </td>
-            <td>A JSON object holding data for new user with ID included
-            <pre>
+            <td>A JSON object holding data for new user with ObjectID included
+                <pre>
                 <code>
                     {
-                        id: 
-                        name: 
-                        username:
-                        email: 
+                        ObjectID: 
+                        Username: req.body.username,
+                    Password: req.body.password,
+                    Email: req.body.password,
+                    Email: req.body.email,
+                    Birthday: req.body.birthday,
                     }
                 </code>
             </pre>
-        </td>
+            </td>
         </tr>
 
 
@@ -180,7 +184,7 @@
 
         <tr>
             <td>Allows users to update their profile username</td>
-            <td>users/[id]/username</td>
+            <td>users/:username</td>
             <td>PATCH</td>
             <td>None</td>
             <td>A text message indicating that their movie list has been updated</td>
@@ -189,7 +193,7 @@
 
         <tr>
             <td>Allows users to add a movie to their list of favorites</td>
-            <td>users/[id]/movies</td>
+            <td>/users/:username/movies/:movieID</td>
             <td>PUT</td>
             <td>Request Format</td>
             <td>Response Format</td>
