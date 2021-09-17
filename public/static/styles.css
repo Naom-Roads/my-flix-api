@@ -93,21 +93,26 @@ text-decoration: none;
 }
 
 table {
-  border: 2px solid black;
+  border: 2px dashed black;
   padding: 20px; 
-  margin: 0 auto; 
+  margin: 20px auto; 
+  width: 300px;
+  height: 600px;
+
 }
 
 th {
-  border: 2px solid black; 
+  border: 2px dashed black; 
   padding: 20px; 
   text-align: center;
-  font-weight: 800;
+  font-weight: bolder;
   font-size: larger;
+  background-color: lightblue;
+  text-transform: capitalize;
 }
 
 td {
-  border: 1px solid black; 
+  border: 1px dashed black; 
   padding: 5px; 
 }
 
