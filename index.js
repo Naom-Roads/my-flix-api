@@ -169,27 +169,7 @@ app.post("/users", (req, res) => {
         })
 });
 
-app.put("/users/:username", (req, res) => {
-    Users.findOneAndUpdate(
-        { username: req.params.username },
-        {
-            $set: {
-                username: req.body.username,
-                password: req.body.password,
-                email: req.body.email,
-                birthday: req.body.birthday,
-            },
-        },
-        { new: true }, //This returns updated document
-        (err, updatedUser) => {
-            if (err) {
-                console.error(err);
-                res.status(500).send("Error: " + err);
-            } else {
-                res.send(updatedUser);
-            }
-        });
-});
+ 
 
 // Allows Users to update Profile
 
