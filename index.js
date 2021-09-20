@@ -11,22 +11,19 @@ mongoose.connect("mongodb://localhost:27017/test", {
 });
 
 const express = require("express");
-const { add } = require("lodash");
 const morgan = require("morgan");
-const { id } = require("process");
 uuid = require("uuid");
 const app = express();
 
 app.use(express.json());
-
 app.use(morgan("common"));
-
 app.use(express.static("public"));
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send(err);
 });
+
 
 app.get("/", (req, res) => {
     res.send("Welcome");
@@ -55,12 +52,8 @@ app.get("/apicalls", (req, res) => {
 app.get("/movies", (req, res) => {
     Movies.find()
         .then((movies) => {
-            res.status(201).json(movies);
+            res.status(201).send(movies);
         })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
-        });
 });
 
 // Gets data for one movie by id
@@ -68,11 +61,7 @@ app.get("/movies", (req, res) => {
 app.get("/movies/:title", (req, res) => {
     Movies.findOne({ title: req.params.title })
         .then((movie) => {
-            res.json(movie);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
+            res.send(movie);
         });
 });
 
@@ -81,11 +70,7 @@ app.get("/movies/:title", (req, res) => {
 app.get("/movies/:id/director", (req, res) => {
     Movies.findById(req.params.id)
         .then((movie) => {
-            res.json(movie.director);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
+            res.send(movie.director);
         });
 });
 
@@ -94,11 +79,7 @@ app.get("/movies/:id/director", (req, res) => {
 app.get("/movies/:id/genres", (req, res) => {
     Movies.findById(req.params.id)
         .then((movie) => {
-            res.json(movie.genres);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Errors: " + err);
+            res.send(movie.genres);
         });
 });
 
@@ -111,27 +92,20 @@ app.post("/movies", (req, res) => {
                 return res.status(400).send(req.body.movie + " already exists");
             } else {
                 Movies
-                 .create({
-                    title: req.body.title,
-                    description: req.body.description,
-                    director: req.body.director,
-                    genres: req.body.genres,
-                    imageurl: req.body.imageurl,
-                    featured: req.body.featured,
-                })
-                    .then((user) => {
-                        res.status(201).json(user);
+                    .create({
+                        title: req.body.title,
+                        description: req.body.description,
+                        director: req.body.director,
+                        genres: req.body.genres,
+                        imageurl: req.body.imageurl,
+                        featured: req.body.featured,
                     })
-                    .catch((error) => {
-                        console.error(error);
-                        res.status(500).send("Error: " + error);
+                    .then((user) => {
+                        res.status(201).send(user);
+
                     });
             }
         })
-        .catch((error) => {
-            console.log(error);
-            res.status(500).send("Error: " + error);
-        });
 });
 
 // Remove a Movie from movie list
@@ -142,14 +116,10 @@ app.delete("/movies/:title", (req, res) => {
             if (!movie) {
                 res.status(400).send(req.params.title + "was not found");
             } else {
-                res.status(200).send(req.params.title + " was deleted");
+                res.send(req.params.title + " was deleted");
             }
-        })
-
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
         });
+
 });
 
 // USERS RES AND REQ START HERE
@@ -159,12 +129,8 @@ app.delete("/movies/:title", (req, res) => {
 app.get("/users", (req, res) => {
     Users.find()
         .then((users) => {
-            res.status(201).json(users);
+            res.send(users);
         })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
-        });
 });
 
 // Gets one user by username
@@ -173,12 +139,8 @@ app.get("/users/:username", (req, res) => {
     Users.findOne({ username: req.params.username })
         .then((user) => {
             console.log(user);
-            res.json(user);
+            res.send(user);
         })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
-        });
 });
 
 // Allows new User to be added
@@ -191,13 +153,13 @@ app.post("/users", (req, res) => {
             } else {
                 Users
                     .create({
-                    username: req.body.username,
-                    password: req.body.password,
-                    email: req.body.email,
-                    birthday: req.body.birthday
-                })
+                        username: req.body.username,
+                        password: req.body.password,
+                        email: req.body.email,
+                        birthday: req.body.birthday
+                    })
                     .then((user) => {
-                        res.status(201).json(user);
+                        res.status(201).send(user);
                     })
                     .catch((error) => {
                         console.error(error);
@@ -205,10 +167,6 @@ app.post("/users", (req, res) => {
                     });
             }
         })
-        .catch((error) => {
-            console.log(error);
-            res.status(500).send("Error: " + error);
-        });
 });
 
 app.put("/users/:username", (req, res) => {
@@ -228,61 +186,70 @@ app.put("/users/:username", (req, res) => {
                 console.error(err);
                 res.status(500).send("Error: " + err);
             } else {
-                res.json(updatedUser);
+                res.send(updatedUser);
             }
-        }
-    );
+        });
 });
 
 // Allows Users to update Profile
 
 app.patch("/users/:username", (req, res) => {
-    Users.findOneAndUpdate({ username: req.params.username })
+    Users.findOne({ username: req.params.username })
         .then((user) => {
             if (!user) {
                 res.status(400).send(req.params.username + " was not found");
             } else {
-                res.status(200).send(req.params.username + " was updated");
+                user.set(req.body);
+                user.save((updatedUser) => {
+                    res.send({ data: updatedUser });
+                })
             }
         })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
-        });
 });
 
 // Allows users to add movie list
 
-app.post("/users/:username/movies/:movieId", (req, res) => {
-    Users.findOneAndUpdate({ username: req.params.username }, {
-       $addToSet: { favoritemovies: req.params.movieId }
-     },
-     { new: true }, // This line makes sure that the updated document is returned
-    (err, updatedUser) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error: ' + err);
-      } else {
-        res.json(updatedUser);
-      }
-    });
-  });
+app.post("/users/:userId/movies/:movieId", (req, res) => {
+    Users.findById(req.params.userId)
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send("User does not exist")
+            }
+            if (user.favoriteMovies && !user.favoriteMovies.includes(req.params.movieId)) {
+
+                user.favoriteMovies.push(req.params.movieId)
+                user.save(() => {
+                    res.send( req.params.movieId + "Movie was added to Favorites" )
+
+                })
+            } else {
+                res.send("Movie is already added");
+            }
+        });
+});
+
+
+
+
 
 // Allows user to delete movie
 
-app.delete("/users/:username/movies/:movieId", (req, res) => {
-    Users.findOneAndRemove({ favoritemovies: req.params.movieId})
-        .then((movie) => {
-            if (!movie) {
-                res.status(400).send(req.params.movieId + " not found");
-            } else {
-                res.status(200).send(req.params.movieId + " was removed from list.");
+app.delete("/users/:id/movies/:movieId", (req, res) => {
+    Users.findbyId(req.params.id)
+        .then((user) => {
+            if (user) {
+                user.findOne({ favoritemovies: req.params.movieId })
+                    .then((movie) => {
+                        if (!movie) {
+                            res.status(400).send(req.params.movieId + " not found");
+                        } else {
+                            user.remove((removedMovie) => {
+                                res.send({ data: removedMovie + " was removed from list." });
+                            })
+                        }
+                    });
             }
         })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
-        });
 });
 
 // Allows user to deregister
@@ -293,13 +260,9 @@ app.delete("/users/:username", (req, res) => {
             if (!user) {
                 res.status(400).send(req.params.username + " was not found.");
             } else {
-                res.status(200).send(req.params.username + " was deleted.");
+                res.send(req.params.username + " was deleted.");
             }
         })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send("Error: " + err);
-        });
 });
 
 app.listen(8080, () => {
