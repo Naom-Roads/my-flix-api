@@ -234,23 +234,24 @@ app.post("/users/:userId/movies/:movieId", (req, res) => {
 
 // Allows user to delete movie
 
-app.delete("/users/:id/movies/:movieId", (req, res) => {
-    Users.findbyId(req.params.id)
+app.delete("/users/:userId/movies/:movieId", (req, res) => {
+    Users.findById(req.params.userId)
         .then((user) => {
-            if (user) {
-                user.findOne({ favoritemovies: req.params.movieId })
-                    .then((movie) => {
-                        if (!movie) {
-                            res.status(400).send(req.params.movieId + " not found");
-                        } else {
-                            user.remove((removedMovie) => {
-                                res.send({ data: removedMovie + " was removed from list." });
-                            })
-                        }
-                    });
+            if (!user) {
+                return res.status(404).send("User does not exist")
             }
-        })
+            if (user.favoriteMovies && user.favoriteMovies.includes(req.params.movieId)) {
+                user.favoriteMovies.remove(req.params.movieId)
+                user.save(() => {
+                    res.send( req.params.movieId + "Movie was removed from Favorites" )
+                })
+            } else {
+                res.send("Movie was not found");
+            }
+        });
 });
+
+
 
 // Allows user to deregister
 
