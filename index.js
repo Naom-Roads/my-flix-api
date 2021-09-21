@@ -169,7 +169,7 @@ app.post("/users", (req, res) => {
         })
 });
 
- 
+
 
 // Allows Users to update Profile
 
@@ -199,7 +199,7 @@ app.post("/users/:userId/movies/:movieId", (req, res) => {
 
                 user.favoriteMovies.push(req.params.movieId)
                 user.save(() => {
-                    res.send( req.params.movieId + "Movie was added to Favorites" )
+                    res.send(req.params.movieId + "Movie was added to Favorites")
 
                 })
             } else {
@@ -223,15 +223,13 @@ app.delete("/users/:userId/movies/:movieId", (req, res) => {
             if (user.favoriteMovies && user.favoriteMovies.includes(req.params.movieId)) {
                 user.favoriteMovies.remove(req.params.movieId)
                 user.save(() => {
-                    res.send( req.params.movieId + "Movie was removed from Favorites" )
+                    res.send(req.params.movieId + "Movie was removed from Favorites")
                 })
             } else {
                 res.send("Movie was not found");
             }
         });
 });
-
-
 
 // Allows user to deregister
 
