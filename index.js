@@ -19,6 +19,10 @@ app.use(express.json());
 app.use(morgan("common"));
 app.use(express.static("public"));
 
+let auth = require('./auth')(app); 
+const passport = require('passport'); 
+require('./passport'); 
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send(err);
