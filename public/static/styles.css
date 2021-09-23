@@ -1,15 +1,19 @@
 body {
   font-family: "Open Sans", sans-serif;
-  background-color: floralwhite;
-  color: black; 
+  background-color: #1A1F35;
+  color: floralwhite; 
 }
 
 h1 {
   font-family: "PT Sans Narrow", sans-serif;
   font-weight: 400;
-  font-size: 50px;
-  padding: 10px;
+  font-size: 80px;
+  padding: 20px;
   margin: 0;
+}
+
+h2 {
+  padding-bottom: 20px;
 }
 
 ul {
@@ -20,7 +24,7 @@ ul {
 
 li {
   list-style: none;
-  color: black; 
+  color: white; 
 }
 
 .main {
@@ -31,8 +35,9 @@ li {
   align-content: space-between;
   column-gap: 5px;
   align-items: baseline;
+  justify-items: baseline;
   height: calc(100% - 100px);
-  
+  padding-top: 30px;
   
 }
 
@@ -41,29 +46,31 @@ li {
 .navbar {
   display: block;
   color: white;
-  background-color: #dd1c1a;
+  background-color: #1A1F35;
   margin: 0 auto;
   font-size: larger;
+  border-bottom: 1px solid thistle;
+  
 }
 
 /* Nav Bar Vertical  */
 
 .sidebar {
-  color: black; 
+  color: whitesmoke; 
   display: block;
   flex-direction: column;
   justify-content: space-between;
   grid-area: sidebar;
   padding: 10px 5px;
   font-size: larger;
-  background-color: floralwhite ;
+  background-color: #1A1F35 ;
   height: 100%;
   
 }
 
 .nav-link {
    display: flex;
-   color: black; 
+   color: white; 
    flex-direction: column;
    justify-content: space-between; 
 font-weight: 500;
@@ -75,7 +82,7 @@ font-weight: 500;
 
 .nav-item .nav-link:hover {
 border-left: 5px solid #F0C808;
-color: black; 
+color: white; 
 text-decoration: none;
 }
 
@@ -86,13 +93,21 @@ text-decoration: none;
 
 .main-content {
   grid-area: content;
+  display: block;
   padding: 10px;
   height: 100%;
+  
+  
 }
 
 #overview {
 
   display: block;
+  padding: 20px; 
+  margin-top: 10px;
+  width: 700px; 
+  word-wrap: normal;
+  font-size: 1.5em;
 
 }
 
@@ -100,14 +115,14 @@ text-decoration: none;
 .apitable {
 
   display: none;
-  justify-content: left;
   table-layout: fixed;
-  border: 2px dashed black;
-  padding: 10px; 
+  border: 2px dashed whitesmoke;
+  padding: 20px; 
   margin: 0px auto; 
   width: fit-content;
-  border: 2px dashed black; 
+  border: 2px dashed whitesmoke; 
   grid-area: apitable; 
+
 
 
 }
@@ -115,18 +130,19 @@ text-decoration: none;
 
 th {
  
-  border: 1px dashed black; 
+  border: 1px dashed whitesmoke;
+  color: black; 
   padding: 20px; 
   text-align: center;
   font-weight: bolder;
   font-size: larger;
-  background-color: lightblue;
+  background-color: #F0C808;
   text-transform: capitalize;
 }
 
 td {
  
-  border: 1px dashed black; 
+  border: 1px dashed whitesmoke; 
   padding: 10px; 
   word-wrap: normal;
  
@@ -151,7 +167,7 @@ tr {
 
 
 .footer {
-    background-color: #07a0c3;
+    background-color: #1A1F35;
     color: white; 
     padding: 20px;
     margin-top: 20px;
