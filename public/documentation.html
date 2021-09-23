@@ -1,87 +1,300 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=PT+Sans+Narrow:wght@700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="./static/normalize.css">
-    <link rel="stylesheet" href="./static/styles.css">
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&family=PT+Sans+Narrow:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./static/normalize.css" />
+    <link rel="stylesheet" href="./static/styles.css" />
     <title>myFlix</title>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <section class="navbar">
-        <h1>Flix API</h1>
+      <h1>Flix API</h1>
     </section>
     <div class="main">
-    <section class="sidebar">
+      <section class="sidebar">
         <ul>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Overview</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Getting Started</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/apicalls.html">API Calls</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Field Reference</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Contact Us</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">FAQs</a>
-                  </li>
-              </ul>
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <p class="nav-link active" aria-current="page" id="overview-button" href="#"
+                >Overview</p
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Getting Started</a>
+            </li>
+            <li class="nav-item">
+              <p class="nav-link" id="button-apicalls">API Calls</p>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Field Reference</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">FAQs</a>
+            </li>
+          </ul>
         </ul>
-    </section>
+      </section>
 
-<section class="main-content">
+      <section class="main-content" id="main-content">
+        <section id="overview">
+          <h2>Overview</h2>
+          <p>
+            This is a simple api that pulls information on a movie, along with
+            the director.
+          </p>
+        </section>
 
-    <h2>Overview</h2>
-    <p>Api allows users to pull information on various movies and add them to their profile
-        MongoDB is used for the database and Mongoose is used for business logic. The API can be tested
-        using postman. It adheres to data security regulations.
-    </p>
+        <!-- TABLE  -->
 
-    <h5>You will be able to pull the following:</h5>
-    <ul>
-        <li>Film Name</li>
-        <li>Actor Names</li>
-        <li>Release Dates</li>
-        <li>Movie Ratings</li>
-        <li>Director Name</li>
-        <li>Country of Origin</li>
-    </ul>
-</section>
+        <table class="apitable" id="apicalls">
+          <thead>
+            <tr>
+              <th>Business Logic</th>
+              <th>URL</th>
+              <th>HTTP Method</th>
+              <th>Request Format</th>
+              <th>Response Format</th>
+            </tr>
+          </thead>
 
-<footer class="footer"> FOOTER GOES HERE </footer>
-</div>
+          <!-- GET -->
 
+          <tr>
+            <td>Get List of Movies for User</td>
+            <td>/movies</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>A JSON object holding data about all of the movies</td>
+          </tr>
 
+          <tr>
+            <td>Get data about a single movie</td>
+            <td>/movies/:title</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>
+              A JSON object holding data about a single movie.
+              
+            <code>
+            {
+             ObjectID: 
+             title: "Embrace of the Serpent" 
+             description: 
+             director: 
+             genre: 
+             featured:
+             image: 
+           }  
+        </code>
+        
+            </td>
+          </tr>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
-        integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"
-        integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous">
-    </script>
-    <script type="module" src="server.js"></script>
+          <tr>
+            <td>Get data about director from a single movie using movie id</td>
+            <td>"/movies/:id/director"</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>
+              A JSON object holding data about a single director (containing an
+              name, bio, birth year, death year)
+              
+            <code>
+            {
+             name: "Ciro Guerra"; 
+             bio: "Ciro Guerra was born on February 6th 1981 in Rio de Oro, Cesar, Colombia"
+             birthyear: 1981 - Present; 
+             deathyear: (If applicable)
+           }  
+        </code>
+        
+            </td>
+          </tr>
 
-</body>
+          <tr>
+            <td>Get data about a genres from single movie id</td>
+            <td>/movies/:id/genres</td>
+            <td>GET</td>
+            <td>None</td>
+            <td>
+              A JSON object with a list of a movie's genres.
+              
+            <code>
+            {
+             genre: "Thriller"
+             description: "Action Packed"
+           }  
+        </code>
+        
+            </td>
+          </tr>
 
+          <!-- POST -->
+          <tr>
+            <td>Add a Movie</td>
+            <td>/movies</td>
+            <td>POST</td>
+            <td>
+              A JSON Object holding data about the movie to add, in this
+              structure:
+              
+                    <code>
+                    {   title: req.body.title,
+                        description: req.body.description,
+                        director: req.body.director,
+                        genres: req.body.genres,
+                        imageurl: req.body.imageurl,
+                        featured: req.body.featured,
+                    }
+                </code> 
+            
+            </td>
+            <td>
+              A JSON object holding data about the movie added including created
+              id.
+              
+                <code>
+                {
+                    _id: 
+                    title: req.body.title,
+                    description: req.body.description,
+                    director: req.body.director,
+                    genres: req.body.genres,
+                    imageurl: req.body.imageurl,
+                    featured: req.body.featured,
+               }  
+            </code>
+            
+            </td>
+          </tr>
+
+          <tr>
+            <td>Allow new user to register</td>
+            <td>/users</td>
+            <td>POST</td>
+            <td>
+              A JSON Object holding data about the user to add structured like:
+              
+                <code>
+                    {
+                        Username: req.body.username,
+                        Password: req.body.password,
+                        Email: req.body.password,
+                        Email: req.body.email,
+                        Birthday: req.body.birthday,
+                    }
+                </code>
+            
+            </td>
+            <td>
+              A JSON object holding data for new user with ObjectID included
+              
+            <code>
+                {
+                    _id: 
+                    Username: req.body.username,
+                Password: req.body.password,
+                Email: req.body.password,
+                Email: req.body.email,
+                Birthday: req.body.birthday,
+                }
+            </code>
+          
+            </td>
+          </tr>
+
+          <!-- PUT -->
+
+          <tr>
+            <td>Allows users to update their profile username</td>
+            <td>users/:username</td>
+            <td>PATCH</td>
+            <td>None</td>
+            <td>
+              A text message indicating that their movie list has been updated
+            </td>
+          </tr>
+
+          <tr>
+            <td>Allows users to add a movie to their list of favorites</td>
+            
+          <td>/users/:username/movies/:movieID</td>
+        </pre
+            >
+            <td>PUT</td>
+            <td>Inserts movie into json document containing favoritemovies</td>
+            <td>Response Format</td>
+          </tr>
+
+          <!-- Delete -->
+
+          <tr>
+            <td>Remove a Movie by Title</td>
+            <td>/movies/:title</td>
+            <td>DELETE</td>
+            <td>None</td>
+            <td>
+              A text message indicating whether the student was successfully
+              removed.
+            </td>
+          </tr>
+
+          <tr>
+            <td>Allows users to remove a movie from their list</td>
+            
+          <td>/users/:userId/movies/:movieId</td>
+        </pre
+            >
+            <td>DELETE</td>
+            <td>Request Format</td>
+            <td>
+              A text message indicating the movie was removed from the list or
+              that the movie was not found
+            </td>
+          </tr>
+
+          <tr>
+            <td>Allows users to deregister and shows the user was removed</td>
+            <td>/users/:username</td>
+            <td>DELETE</td>
+            <td>Request Format</td>
+            <td>A text message indicating user email has been removed</td>
+          </tr>
+        </table>
+      </section>
+      <footer class="footer"></footer>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"
+      integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js"
+      integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/"
+      crossorigin="anonymous"
+    ></script>
+    <script src="./scripts.js"></script>
+  </body>
 </html>
