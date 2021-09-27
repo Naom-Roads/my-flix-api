@@ -50,7 +50,7 @@ li {
   margin: 0 auto;
   font-size: larger;
   border-bottom: 1px solid thistle;
-  
+ 
 }
 
 /* Nav Bar Vertical  */
@@ -62,7 +62,7 @@ li {
   justify-content: space-between;
   grid-area: sidebar;
   padding: 10px 5px;
-  font-size: larger;
+  font-size: x-large;
   background-color: #1A1F35 ;
   height: 100%;
   
@@ -94,6 +94,7 @@ text-decoration: none;
 .main-content {
   grid-area: content;
   display: block;
+  margin-top: 50px;
   padding: 10px;
   height: 100%;
   
@@ -119,7 +120,7 @@ text-decoration: none;
   border: 2px dashed whitesmoke;
   padding: 20px; 
   margin: 0px auto; 
-  width: fit-content;
+  width: 900px; 
   border: 2px dashed whitesmoke; 
   grid-area: apitable; 
 

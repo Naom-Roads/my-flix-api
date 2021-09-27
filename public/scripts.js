@@ -3,44 +3,67 @@
 
 // NavBar
 
+function hideOverview() {
+    let overview = document.getElementById("overview");
+    overview.style.display = "none";
+}
+
+
+function showOverview() {
+    let overview = document.getElementById("overview");
+    overview.style.display = "block"
+}
+
 
 function overview() {
-let overview = document.getElementById("overview");
-
-if (overview.style.display === "none") {
-    overview.style.display = "block";
-} else {
-    overview.style.display = "none"; 
+    let overview = document.getElementById("overview");
+    if (overview.style.display === "none") {
+        showOverview();
+        hideTable();
+    } else {
+        hideOverview();
+    }
 }
+
+
+function showTable() {
+    let table = document.getElementById("apicalls");
+    table.style.display = "table";
 }
 
-let buttonOne = document.getElementById("overview-button");
-buttonOne.addEventListener('click', function () {
-    apiCalls() 
-
-}); 
-
+function hideTable() {
+    let table = document.getElementById("apicalls");
+    table.style.display = "none";
+}
 
 
 function apiCalls() {
     let table = document.getElementById("apicalls");
-    let overview = document.getElementById("overview");
-    
     if (table.style.display === "none") {
-        table.style.display = "table";
-        overview.style.display = "none";
+        showTable();
+        hideOverview();
     } else {
-        table.style.display = "none";
-        overview.style.display = "block"
+        hideTable();
+        showOverview();
     }
+
 }
+
+let buttonOne = document.getElementById("overview-button");
+buttonOne.addEventListener('click', function () {
+    overview()
+
+});
+
 
 let buttonTwo = document.getElementById("button-apicalls");
 buttonTwo.addEventListener('click', function () {
-    apiCalls() 
+    apiCalls()
 
-   
 });
+
+
+  
 
 
 
