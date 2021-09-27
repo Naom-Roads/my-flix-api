@@ -10,19 +10,26 @@ mongoose.connect("mongodb://localhost:27017/test", {
     useUnifiedTopology: true,
 });
 
+
 const express = require("express");
 const morgan = require("morgan");
 uuid = require("uuid");
 const app = express();
 
+const cors = require('cors');
+app.use(cors());
+
+const passport = require("passport"); 
+require("./passport.js"); 
+
 app.use(express.urlencoded({extended: true}));
+let auth = require("./auth.js")(app); 
+
 app.use(express.json());
 app.use(morgan("common"));
 app.use(express.static("public"));
 
-let auth = require("./auth.js")(app); 
-const passport = require("passport"); 
-require("./passport.js"); 
+
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -163,6 +170,7 @@ app.get("/users/:username", passport.authenticate('jwt',
 // Allows new User to be added
 
 app.post("/users", (req, res) => {
+    let hashedPassword = Users.hashPassword(req.body.password);
     Users.findOne({ username: req.body.username })
     
         .then((user) => {
