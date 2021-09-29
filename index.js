@@ -1,4 +1,7 @@
 // app.METHOD(PATH, HANDLER)
+const dotenv = require('dotenv');
+dotenv.config();
+
 const mongoose = require("mongoose");
 const Models = require("./models.js");
 
@@ -9,9 +12,6 @@ mongoose.connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
-
-
-
 
 const express = require("express");
 const morgan = require("morgan");
@@ -24,15 +24,17 @@ app.use(cors());
 const passport = require("passport");
 require("./passport.js");
 
-const { check, validationResult } = require('express-validator');
 
+
+const { check, validationResult } = require('express-validator');
 
 
 app.use(express.urlencoded({ extended: true }));
 let auth = require("./auth.js")(app);
 
+
 app.use(express.json());
-app.use(morgan("common"));
+app.use(morgan('common'));
 app.use(express.static("public"));
 
 
@@ -177,9 +179,9 @@ app.get("/users/:username", passport.authenticate('jwt',
 
 app.post("/users", 
     [
-        check('Username', 'Username is required').isLength({ min: 5 }),
-        check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-        check('Email', 'Email does not appear to be valid').isEmail()
+        check('username', 'Username is required').isLength({ min: 5 }),
+        check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+        check('email', 'Email does not appear to be valid').isEmail()
     ], (req, res) => {
 
         let errors = validationResult(req);
@@ -299,7 +301,8 @@ app.post("/users",
 });
 
 
-const port = process.env.PORT || 8080; 
+const port = process.env.PORT || 8000;
 app.listen(port, '0.0.0.0',() => {
     console.log('Listening on port' + port);
-}); 
+});
+
