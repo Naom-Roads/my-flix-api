@@ -193,7 +193,6 @@ app.post("/users",
 
         let hashedPassword = Users.hashPassword(req.body.password);
         Users.findOne({ username: req.body.username })
-""
             .then((user) => {
                 if (user) {
                     return res.status(400).send(req.body.username + " already exists");
