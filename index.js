@@ -23,17 +23,14 @@ app.use(express.static("public"));
 uuid = require('uuid');
 
 
-const cors = require('cors');
-app.use(cors());
-
-
-const { check, validationResult } = require('express-validator');
-
 let auth = require('./auth.js')(app);
 const passport = require('passport');
 require('./passport');
 
+const cors = require('cors');
+app.use(cors());
 
+const { check, validationResult } = require('express-validator');
 
 
 
