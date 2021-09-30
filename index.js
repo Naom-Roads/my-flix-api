@@ -1,9 +1,13 @@
 // app.METHOD(PATH, HANDLER)
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 
-const mongoose = require('mongoose');
-const Models = require('./models.js');
+const morgan = require("morgan");
+uuid = require("uuid");
+const mongoose = require("mongoose");
+const express = require("express");
+const Models = require("./models.js");
+
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -12,40 +16,30 @@ mongoose.connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
-const express = require('express');
+
 const app = express();
-const morgan = require('morgan');
+
+app.use(morgan("common"));
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(morgan('common'));
-app.use(express.static("public"));
-
-uuid = require('uuid');
 
 
-let auth = require('./auth.js')(app);
-const passport = require('passport');
-require('./passport');
+require("./auth")(app);
 
-const cors = require('cors');
+
+const cors = require("cors");
 app.use(cors());
 
-const { check, validationResult } = require('express-validator');
+const passport = require("passport");
+require("./passport");
 
+const { check, validationResult } = require("express-validator");
 
-
-
-
+app.use(express.static("public"));
 
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send(err);
-});
-
-
-app.get("/", (req, res) => {
-    res.send("Welcome");
 });
 
 // Main Page
@@ -72,7 +66,7 @@ app.get("/movies", passport.authenticate('jwt',
     { session: false }), (req, res) => {
         Movies.find()
             .then((movies) => {
-                res.status(201).send(movies);
+                res.status(200).send(movies);
             })
             .catch((error) => {
                 console.error(error);
@@ -178,9 +172,9 @@ app.get("/users/:username", passport.authenticate('jwt',
 
 app.post("/users", 
     [
-        check('username', 'Username is required').isLength({ min: 5 }),
-        check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-        check('email', 'Email does not appear to be valid').isEmail()
+        check('Username', 'Username is required').isLength({ min: 5 }),
+        check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+        check('Email', 'Email does not appear to be valid').isEmail()
     ], (req, res) => {
 
         let errors = validationResult(req);
