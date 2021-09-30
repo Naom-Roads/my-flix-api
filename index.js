@@ -20,11 +20,6 @@ app.use(express.json());
 app.use(morgan('common'));
 app.use(express.static("public"));
 
-let auth = require('./auth.js')(app);
-const passport = require('passport');
-require('./passport');
-
-
 uuid = require('uuid');
 
 
@@ -33,6 +28,13 @@ app.use(cors());
 
 
 const { check, validationResult } = require('express-validator');
+
+let auth = require('./auth.js')(app);
+const passport = require('passport');
+require('./passport');
+
+
+
 
 
 
