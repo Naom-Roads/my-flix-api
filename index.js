@@ -22,10 +22,9 @@ const app = express();
 app.use(morgan("common"));
 
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+
 
 require("./auth")(app);
-
 
 const cors = require("cors");
 app.use(cors());
@@ -35,6 +34,7 @@ require("./passport");
 
 const { check, validationResult } = require("express-validator");
 
+app.use(express.json());
 app.use(express.static("public"));
 
 
@@ -45,14 +45,9 @@ app.use((err, req, res, next) => {
 
 // Main Page
 
+
 app.get("/documentation", (req, res) => {
     res.sendFile("public/documentation.html", { root: __dirname });
-});
-
-//Index Page
-
-app.get("/documentation", (req, res) => {
-    res.send("public/documentation");
 });
 
 // API CALLS TABLE PAGE
