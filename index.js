@@ -20,8 +20,9 @@ mongoose.connect(process.env.CONNECTION_URI, {
 const app = express();
 
 app.use(morgan("common"));
-app.use(express.urlencoded({ extended: true }));
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 require("./auth")(app);
 
@@ -170,11 +171,11 @@ app.get("/users/:username", passport.authenticate('jwt',
 
 // Allows new User to be added
 
-app.post("/users", 
+app.post("/users",
     [
-        check('Username', 'Username is required').isLength({ min: 5 }),
-        check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
-        check('Email', 'Email does not appear to be valid').isEmail()
+        check('username', 'Username is required').isLength({ min: 5 }),
+        check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+        check('email', 'Email does not appear to be valid').isEmail()
     ], (req, res) => {
 
         let errors = validationResult(req);
@@ -206,7 +207,7 @@ app.post("/users",
                         });
                 }
             });
-    
+
 
 
 
@@ -227,7 +228,7 @@ app.post("/users",
                     }
                 })
         });
-    
+
 
     // Allows users to add movie list
 
