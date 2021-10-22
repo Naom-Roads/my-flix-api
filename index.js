@@ -61,7 +61,7 @@ app.get("/apicalls", (req, res) => {
 app.get("/movies", function (req, res)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              {
     Movies.find()
         .then((movies) => {
-            res.status(200).send(movies);
+            res.status(200).json(movies);
         })
         .catch((error) => {
             console.error(error);
