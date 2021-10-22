@@ -57,89 +57,88 @@ app.get("/apicalls", (req, res) => {
 });
 
 // Get List of All Movies
-
-app.get("/movies", passport.authenticate('jwt',
-    { session: false }), (req, res) => {
-        Movies.find()
-            .then((movies) => {
-                res.status(200).send(movies);
-            })
-            .catch((error) => {
-                console.error(error);
-                res.status(500).send('Error: ' + error);
-            });
-    });
+// passport.authenticate('jwt', { session: false }),
+app.get("/movies", function (req, res)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              {
+    Movies.find()
+        .then((movies) => {
+            res.status(200).send(movies);
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+        });
+});
 
 // Gets data for one movie by id
 
 app.get("/movies/:title", passport.authenticate('jwt',
     { session: false }), (req, res) => {
-        Movies.findOne({ title: req.params.title })
-            .then((movie) => {
-                res.send(movie);
-            });
-    });
+    Movies.findOne({ title: req.params.title })
+        .then((movie) => {
+            res.send(movie);
+        });
+});
 
 // Gets data about the director
 
 app.get("/movies/:id/director", passport.authenticate('jwt',
     { session: false }), (req, res) => {
-        Movies.findById(req.params.id)
-            .then((movie) => {
-                res.send(movie.director);
-            });
-    });
+    Movies.findById(req.params.id)
+        .then((movie) => {
+            res.send(movie.director);
+        });
+});
 
 // Gets data about the genre
 
 app.get("/movies/:id/genres", passport.authenticate('jwt',
     { session: false }), (req, res) => {
-        Movies.findById(req.params.id)
-            .then((movie) => {
-                res.send(movie.genres);
-            });
-    });
+    Movies.findById(req.params.id)
+        .then((movie) => {
+            res.send(movie.genres);
+        });
+});
 
 // Add a movie
 
 app.post("/movies", passport.authenticate('jwt',
     { session: false }), (req, res) => {
-        Movies.findOne({ title: req.params.title })
-            .then((movie) => {
-                if (movie) {
-                    return res.status(400).send(req.body.movie + " already exists");
-                } else {
-                    Movies
-                        .create({
-                            title: req.body.title,
-                            description: req.body.description,
-                            director: req.body.director,
-                            genres: req.body.genres,
-                            imageurl: req.body.imageurl,
-                            featured: req.body.featured,
-                        })
-                        .then((user) => {
-                            res.status(201).send(user);
+    Movies.findOne({ title: req.params.title })
+        .then((movie) => {
+            if (movie) {
+                return res.status(400).send(req.body.movie + " already exists");
+            } else {
+                Movies
+                    .create({
+                        title: req.body.title,
+                        description: req.body.description,
+                        director: req.body.director,
+                        genres: req.body.genres,
+                        imageurl: req.body.imageurl,
+                        featured: req.body.featured,
+                    })
+                    .then((user) => {
+                        res.status(201).send(user);
 
-                        });
-                }
-            })
-    });
+                    });
+            }
+        })
+});
 
 // Remove a Movie from movie list
 
 app.delete("/movies/:title", passport.authenticate('jwt',
     { session: false }), (req, res) => {
-        Movies.findOneAndRemove({ title: req.params.title })
-            .then((movie) => {
-                if (!movie) {
-                    res.status(400).send(req.params.title + "was not found");
-                } else {
-                    res.send(req.params.title + " was deleted");
-                }
-            });
+    Movies.findOneAndRemove({ title: req.params.title })
+        .then((movie) => {
+            if (!movie) {
+                res.status(400).send(req.params.title + "was not found");
+            } else {
+                res.send(req.params.title + " was deleted");
+            }
+        });
 
-    });
+});
 
 // USERS RES AND REQ START HERE
 
@@ -147,22 +146,22 @@ app.delete("/movies/:title", passport.authenticate('jwt',
 
 app.get("/users", passport.authenticate('jwt',
     { session: false }), (req, res) => {
-        Users.find()
-            .then((users) => {
-                res.send(users);
-            })
-    });
+    Users.find()
+        .then((users) => {
+            res.send(users);
+        })
+});
 
 // Gets one user by username
 
 app.get("/users/:username", passport.authenticate('jwt',
     { session: false }), (req, res) => {
-        Users.findOne({ username: req.params.username })
-            .then((user) => {
-                console.log(user);
-                res.send(user);
-            })
-    });
+    Users.findOne({ username: req.params.username })
+        .then((user) => {
+            console.log(user);
+            res.send(user);
+        })
+});
 
 // Allows new User to be added
 
@@ -207,10 +206,10 @@ app.post("/users",
 
 
 
-    // Allows Users to update Profile
+        // Allows Users to update Profile
 
-    app.patch("/users/:username", passport.authenticate('jwt',
-        { session: false }), (req, res) => {
+        app.patch("/users/:username", passport.authenticate('jwt',
+            { session: false }), (req, res) => {
             Users.findOne({ username: req.params.username })
                 .then((user) => {
                     if (!user) {
@@ -225,10 +224,10 @@ app.post("/users",
         });
 
 
-    // Allows users to add movie list
+        // Allows users to add movie list
 
-    app.post("/users/:userId/movies/:movieId", passport.authenticate('jwt',
-        { session: false }), (req, res) => {
+        app.post("/users/:userId/movies/:movieId", passport.authenticate('jwt',
+            { session: false }), (req, res) => {
             Users.findById(req.params.userId)
                 .then((user) => {
                     if (!user) {
@@ -251,10 +250,10 @@ app.post("/users",
 
 
 
-    // Allows user to delete movie
+        // Allows user to delete movie
 
-    app.delete("/users/:userId/movies/:movieId", passport.authenticate('jwt',
-        { session: false }), (req, res) => {
+        app.delete("/users/:userId/movies/:movieId", passport.authenticate('jwt',
+            { session: false }), (req, res) => {
             Users.findById(req.params.userId)
                 .then((user) => {
                     if (!user) {
@@ -271,10 +270,10 @@ app.post("/users",
                 });
         });
 
-    // Allows user to deregister
+        // Allows user to deregister
 
-    app.delete("/users/:username", passport.authenticate('jwt',
-        { session: false }), (req, res) => {
+        app.delete("/users/:username", passport.authenticate('jwt',
+            { session: false }), (req, res) => {
             Users.findOneAndRemove({ username: req.params.username })
                 .then((user) => {
                     if (!user) {
@@ -286,11 +285,10 @@ app.post("/users",
         });
 
 
-});
+    });
 
 
 const port = process.env.PORT || 8000;
 app.listen(port, '0.0.0.0',() => {
     console.log('Listening on port' + port);
 });
-
