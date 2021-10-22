@@ -60,10 +60,10 @@ app.get("/apicalls", (req, res) => {
 // passport.authenticate('jwt', { session: false }),
 app.get("/movies", function (req, res)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              {
     Movies.find()
-        .then((movies) => {
+        .then(function (movies) {
             res.status(200).json(movies);
         })
-        .catch((error) => {
+        .catch(function (error) {
             console.error(error);
             res.status(500).send('Error: ' + error);
         });
