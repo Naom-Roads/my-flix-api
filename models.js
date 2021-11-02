@@ -13,7 +13,7 @@ genres: {
 director: {
     name: String,
     bio: String,
-    birthyear: Date,
+    birthyear: String,
 },
 
 actors: [String],
@@ -26,7 +26,7 @@ let userSchema = mongoose.Schema({
     username: {type: String, required: true}, 
     password: {type: String, required: true},
     email: {type: String, required: true},
-    birthyear: { type: Date, required: false},
+    birthyear: { type: String, required: false},
     favoriteMovies: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Movie', default:[]}]
 });
 
