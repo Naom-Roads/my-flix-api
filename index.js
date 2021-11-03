@@ -4,10 +4,10 @@ dotenv.config();
 
 const morgan = require("morgan");
 uuid = require("uuid");
+
 const mongoose = require("mongoose");
 const express = require("express");
 const Models = require("./models.js");
-
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -23,20 +23,19 @@ app.use(morgan("common"));
 
 app.use(express.urlencoded({extended: true}));
 
-
 require("./auth")(app);
+
+let auth = require("./auth.js")(app);
+const passport = require("passport");
+require("./passport");
 
 const cors = require("cors");
 app.use(cors());
-
-const passport = require("passport");
-require("./passport");
 
 const {check, validationResult} = require("express-validator");
 
 app.use(express.json());
 app.use(express.static("public"));
-
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
