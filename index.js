@@ -19,6 +19,7 @@ mongoose.connect(process.env.CONNECTION_URI, {
 
 const app = express();
 const cors = require("cors");
+app.use(cors());
 
 app.use(morgan("common"));
 
@@ -26,12 +27,8 @@ app.use(express.urlencoded({extended: true}));
 
 require("./auth")(app);
 
-let auth = require("./auth.js")(app);
 const passport = require("passport");
 require("./passport");
-
-
-app.use(cors());
 
 const {check, validationResult} = require("express-validator");
 
