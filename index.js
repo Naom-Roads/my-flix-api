@@ -161,7 +161,7 @@ app.get("/users/:username", passport.authenticate('jwt',
 
 // Allows new User to be added
 
-app.post("/users",
+app.post("/register",
     [
         check('username', 'Username is required').isLength({min: 5}),
         check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
