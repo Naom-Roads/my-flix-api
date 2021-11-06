@@ -25,8 +25,6 @@ app.use(morgan("common"));
 
 app.use(express.urlencoded({extended: true}));
 
-require("./auth")(app);
-
 const passport = require("passport");
 require("./passport");
 
@@ -34,6 +32,8 @@ const {check, validationResult} = require("express-validator");
 
 app.use(express.json());
 app.use(express.static("public"));
+
+require("./auth")(app);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
