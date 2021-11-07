@@ -85,6 +85,18 @@ app.get("/movies/:id/director", passport.authenticate('jwt',
         });
 });
 
+app.get("/directors", passport.authenticate('jwt', {session: false}), (req, res) => {
+    Directors.find()
+        .then((directors) => {
+            res.status(200).json(directors);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+
 // Gets data about the genre
 
 app.get("/movies/:id/genres", passport.authenticate('jwt',
