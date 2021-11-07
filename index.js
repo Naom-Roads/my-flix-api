@@ -11,6 +11,8 @@ const Models = require("./models.js");
 
 const Movies = Models.Movie;
 const Users = Models.User;
+const Genre = Models.Genre;
+const Director = Models.Director;
 
 mongoose.connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
@@ -86,7 +88,7 @@ app.get("/movies/:id/director", passport.authenticate('jwt',
 });
 
 app.get("/directors", passport.authenticate('jwt', {session: false}), (req, res) => {
-    Directors.find()
+    Director.find()
         .then((directors) => {
             res.status(200).json(directors);
         })
@@ -104,6 +106,17 @@ app.get("/movies/:id/genres", passport.authenticate('jwt',
     Movies.findById(req.params.id)
         .then((movie) => {
             res.send(movie.genres);
+        });
+});
+
+app.get("/genres", passport.authenticate('jwt', {session: false}), (req, res) => {
+    Genre.find()
+        .then((directors) => {
+            res.status(200).json(directors);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
         });
 });
 
