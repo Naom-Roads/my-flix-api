@@ -11,8 +11,8 @@ const Models = require("./models.js");
 
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genre = Models.Genre;
-const Director = Models.Director;
+const Genres = Models.Genre;
+const Directors = Models.Director;
 
 mongoose.connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
@@ -75,44 +75,57 @@ app.get("/movies/:title", passport.authenticate('jwt',
         .then((movie) => {
             res.send(movie);
         });
+
 });
 
 // Gets data about the director
 
-app.get("/movies/:id/director", passport.authenticate('jwt',
-    {session: false}), (req, res) => {
-    Movies.findById(req.params.id)
-        .then((movie) => {
-            res.send(movie.director);
-        });
-});
+app.get("/directors", passport.authenticate('jwt',
+        {session: false}), (req, res) => {
+        Directors.find()
+            .then(directors => {
+                res.status(201).json(directors);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+    }
+);
 
-app.get("/directors", passport.authenticate('jwt', {session: false}), (req, res) => {
-    Director.find()
-        .then((directors) => {
-            res.status(200).json(directors);
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        });
-});
-
+app.get("/directors/:name", passport.authenticate('jwt', {session: false}), (req, res) => {
+        Directors.findOne({name: req.params.name})
+            .then(directors => {
+                res.json(directors);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+    }
+);
 
 // Gets data about the genre
 
-app.get("/movies/:id/genres", passport.authenticate('jwt',
-    {session: false}), (req, res) => {
-    Movies.findById(req.params.id)
-        .then((movie) => {
-            res.send(movie.genres);
-        });
-});
+app.get("/genres/:name", passport.authenticate('jwt',
+        {session: false}), (req, res) => {
+        Genres.findOne({name: req.params.name})
+            .then(genre => {
+                res.json(genre);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+    }
+);
+
+// Gets all genres
 
 app.get("/genres", passport.authenticate('jwt', {session: false}), (req, res) => {
-    Genre.find()
-        .then((directors) => {
-            res.status(200).json(directors);
+    Genres.find()
+        .then(genres => {
+            res.status(200).json(genres);
         })
         .catch((err) => {
             console.error(err);
