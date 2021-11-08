@@ -79,7 +79,7 @@ app.get("/movies/:title", passport.authenticate('jwt',
 
 // Gets data for one movie by id
 
-app.get("movies/genres/:genresId", passport.authenticate('jwt',
+app.get("movies/genres/:genreId", passport.authenticate('jwt',
         {session: false}), (req, res) => {
         Genres.findOne({name: req.params.id})
             .then(genre => {
@@ -92,7 +92,7 @@ app.get("movies/genres/:genresId", passport.authenticate('jwt',
     }
 );
 
-app.get("movies/directors/:directorsId", passport.authenticate('jwt',
+app.get("movies/directors/:directorId", passport.authenticate('jwt',
         {session: false}), (req, res) => {
         Directors.findOne({name: req.params.name})
             .then(genre => {
@@ -110,6 +110,20 @@ app.get("movies/directors/:directorsId", passport.authenticate('jwt',
 
 // Gets data about the director
 
+app.get("/directors/:name", passport.authenticate('jwt', {session: false}), (req, res) => {
+        Directors.findOne({name: req.params.name})
+            .then(directors => {
+                res.json(directors);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+    }
+);
+
+//Gets all Directors
+
 app.get("/directors", passport.authenticate('jwt',
         {session: false}), (req, res) => {
         Directors.find()
@@ -123,17 +137,6 @@ app.get("/directors", passport.authenticate('jwt',
     }
 );
 
-app.get("/directors/:name", passport.authenticate('jwt', {session: false}), (req, res) => {
-        Directors.findOne({name: req.params.name})
-            .then(directors => {
-                res.json(directors);
-            })
-            .catch(err => {
-                console.error(err);
-                res.status(500).send('Error: ' + err);
-            });
-    }
-);
 
 // Gets data about the genre
 
