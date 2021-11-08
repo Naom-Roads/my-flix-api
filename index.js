@@ -67,8 +67,7 @@ app.get("/movies", passport.authenticate('jwt', {session: false}), (req, res) =>
         });
 });
 
-// Gets data for one movie by id
-
+// Gets movie by title
 app.get("/movies/:title", passport.authenticate('jwt',
     {session: false}), (req, res) => {
     Movies.findOne({title: req.params.title})
@@ -77,6 +76,37 @@ app.get("/movies/:title", passport.authenticate('jwt',
         });
 
 });
+
+// Gets data for one movie by id
+
+app.get("movies/genres/:id", passport.authenticate('jwt',
+        {session: false}), (req, res) => {
+        Genres.findOne({name: req.params.name})
+            .then(genre => {
+                res.json(genre);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+    }
+);
+
+app.get("movies/directors/:id", passport.authenticate('jwt',
+        {session: false}), (req, res) => {
+        Genres.findOne({name: req.params.name})
+            .then(genre => {
+                res.json(genre);
+            })
+            .catch(err => {
+                console.error(err);
+                res.status(500).send('Error: ' + err);
+            });
+    }
+);
+
+
+
 
 // Gets data about the director
 
@@ -159,6 +189,9 @@ app.post("/movies", passport.authenticate('jwt',
         })
 });
 
+
+
+
 // Remove a Movie from movie list
 
 app.delete("/movies/:title", passport.authenticate('jwt',
@@ -200,7 +233,7 @@ app.get("/users/:username", passport.authenticate('jwt',
 // Allows new User to be added
 
 app.post("/register",
-    [
+    [ // validations
         check('username', 'Username is required').isLength({min: 5}),
         check('username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
         check('email', 'Email does not appear to be valid').isEmail()
