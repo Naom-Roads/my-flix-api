@@ -79,7 +79,7 @@ app.get("/movies/:title", passport.authenticate('jwt',
 
 // Gets data for one movie by id
 
-app.get("movies/genres/:genreId", passport.authenticate('jwt',
+app.get("/movies/genres/:genreId", passport.authenticate('jwt',
         {session: false}), (req, res) => {
         Genres.findOne({name: req.params.id})
             .then(genre => {
@@ -92,7 +92,7 @@ app.get("movies/genres/:genreId", passport.authenticate('jwt',
     }
 );
 
-app.get("movies/directors/:directorId", passport.authenticate('jwt',
+app.get("/movies/directors/:directorId", passport.authenticate('jwt',
         {session: false}), (req, res) => {
         Directors.findOne({name: req.params.name})
             .then(genre => {
@@ -104,8 +104,6 @@ app.get("movies/directors/:directorId", passport.authenticate('jwt',
             });
     }
 );
-
-
 
 
 // Gets data about the director
@@ -193,8 +191,6 @@ app.post("/movies", passport.authenticate('jwt',
 });
 
 
-
-
 // Remove a Movie from movie list
 
 app.delete("/movies/:title", passport.authenticate('jwt',
@@ -233,6 +229,27 @@ app.get("/users/:username", passport.authenticate('jwt',
         })
 });
 
+// favorite movies list
+
+app.get("/users/:userId/movies", passport.authenticate('jwt', {session: false}), (req, res) => {
+    Users.findById(req.params.userId)
+        .then((user) => {
+            Movies.find({_id: {$in: user.favoriteMovies}})
+                .then((movies) => {
+                    res.status(200).json(movies);
+                })
+                .catch((err) => {
+                    console.error(err);
+                    res.status(500).send('Error: ' + err);
+                });
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send('Error: ' + err);
+        });
+});
+
+
 // Allows new User to be added
 
 app.post("/register",
@@ -266,91 +283,97 @@ app.post("/register",
                         .then((user) => {
                             res.status(201).send(user);
                         })
-                        .catch((error) => {
-                            console.error(error);
-                            res.status(500).send("Error: " + error);
+                        .catch((err) => {
+                            console.error(err);
+                            res.status(500).send("Error: " + err);
                         });
                 }
             });
-
-
-        // Allows Users to update Profile
-
-        app.patch("/users/:username", passport.authenticate('jwt',
-            {session: false}), (req, res) => {
-            Users.findOne({username: req.params.username})
-                .then((user) => {
-                    if (!user) {
-                        res.status(400).send(req.params.username + " was not found");
-                    } else {
-                        user.set(req.body);
-                        user.save((updatedUser) => {
-                            res.send({data: updatedUser});
-                        })
-                    }
-                })
-        });
-
-
-        // Allows users to add movie list
-
-        app.post("/users/:userId/movies/:movieId", passport.authenticate('jwt',
-            {session: false}), (req, res) => {
-            Users.findById(req.params.userId)
-                .then((user) => {
-                    if (!user) {
-                        return res.status(404).send("User does not exist")
-                    }
-                    if (user.favoriteMovies && !user.favoriteMovies.includes(req.params.movieId)) {
-
-                        user.favoriteMovies.push(req.params.movieId)
-                        user.save(() => {
-                            res.send(req.params.movieId + "Movie was added to Favorites")
-
-                        })
-                    } else {
-                        res.send("Movie is already added");
-                    }
-                });
-        });
-
-
-        // Allows user to delete movie
-
-        app.delete("/users/:userId/movies/:movieId", passport.authenticate('jwt',
-            {session: false}), (req, res) => {
-            Users.findById(req.params.userId)
-                .then((user) => {
-                    if (!user) {
-                        return res.status(404).send("User does not exist")
-                    }
-                    if (user.favoriteMovies && user.favoriteMovies.includes(req.params.movieId)) {
-                        user.favoriteMovies.remove(req.params.movieId)
-                        user.save(() => {
-                            res.send(req.params.movieId + "Movie was removed from Favorites")
-                        })
-                    } else {
-                        res.send("Movie was not found");
-                    }
-                });
-        });
-
-        // Allows user to deregister
-
-        app.delete("/users/:username", passport.authenticate('jwt',
-            {session: false}), (req, res) => {
-            Users.findOneAndRemove({username: req.params.username})
-                .then((user) => {
-                    if (!user) {
-                        res.status(400).send(req.params.username + " was not found.");
-                    } else {
-                        res.send(req.params.username + " was deleted.");
-                    }
-                })
-        });
-
-
     });
+
+
+// Allows Users to update Profile
+
+app.patch("/users/:username", passport.authenticate('jwt',
+    {session: false}), (req, res) => {
+    Users.findOne({username: req.params.username})
+        .then((user) => {
+            if (!user) {
+                res.status(400).send(req.params.username + " was not found");
+            } else {
+                user.set(req.body);
+                user.save().then((updatedUser) => {
+                    res.send({data: updatedUser});
+                })
+                    .catch((err) => {
+                        console.log(err);
+                        res.status(400).send("Error" + err);
+                    })
+            }
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).send("Error: " + err);
+        });
+});
+
+
+// Allows users to add movie list
+
+app.post("/users/:userId/movies/:movieId", passport.authenticate('jwt',
+    {session: false}), (req, res) => {
+    Users.findById(req.params.userId)
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send("User does not exist")
+            }
+            if (user.favoriteMovies && !user.favoriteMovies.includes(req.params.movieId)) {
+
+                user.favoriteMovies.push(req.params.movieId)
+                user.save(() => {
+                    res.send(req.params.movieId + "Movie was added to Favorites")
+
+                })
+            } else {
+                res.send("Movie is already added");
+            }
+        });
+});
+
+
+// Allows user to delete movie
+
+app.delete("/users/:userId/movies/:movieId", passport.authenticate('jwt',
+    {session: false}), (req, res) => {
+    Users.findById(req.params.userId)
+        .then((user) => {
+            if (!user) {
+                return res.status(404).send("User does not exist")
+            }
+            if (user.favoriteMovies && user.favoriteMovies.includes(req.params.movieId)) {
+                user.favoriteMovies.remove(req.params.movieId)
+                user.save(() => {
+                    res.send(req.params.movieId + "Movie was removed from Favorites")
+                })
+            } else {
+                res.send("Movie was not found");
+            }
+        });
+});
+
+// Allows user to deregister
+
+app.delete("/users/:username", passport.authenticate('jwt',
+    {session: false}), (req, res) => {
+    Users.findOneAndRemove({username: req.params.username})
+        .then((user) => {
+            if (!user) {
+                res.status(400).send(req.params.username + " was not found.");
+            } else {
+                res.send(req.params.username + " was deleted.");
+            }
+        })
+});
 
 
 const port = process.env.PORT || 8000;
