@@ -303,7 +303,7 @@ app.patch("/users/:username", passport.authenticate('jwt',
             } else {
                 user.set(req.body);
                 user.save().then((updatedUser) => {
-                    res.send({data: updatedUser});
+                    res.send(updatedUser);
                 })
                     .catch((err) => {
                         console.log(err);
