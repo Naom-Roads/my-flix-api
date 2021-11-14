@@ -231,8 +231,8 @@ app.get("/users/:username", passport.authenticate('jwt',
 
 // favorite movies list
 
-app.get("/users/:userId/movies", passport.authenticate('jwt', {session: false}), (req, res) => {
-    Users.findById(req.params.userId)
+app.get("/users/:username/movies", passport.authenticate('jwt', {session: false}), (req, res) => {
+    Users.findOne({username: req.params.username})
         .then((user) => {
             Movies.find({_id: {$in: user.favoriteMovies}})
                 .then((movies) => {
@@ -322,7 +322,7 @@ app.patch("/users/:username", passport.authenticate('jwt',
 
 app.post("/users/:username/movies/:movieId", passport.authenticate('jwt',
     {session: false}), (req, res) => {
-    Users.findOne(req.params.username)
+    Users.findOne({username: req.params.username})
         .then((user) => {
             if (!user) {
                 return res.status(404).send("User does not exist")
