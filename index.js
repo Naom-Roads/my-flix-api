@@ -325,13 +325,13 @@ app.post("/users/:username/movies/:movieId", passport.authenticate('jwt',
     Users.findOne({username: req.params.username})
         .then((user) => {
             if (!user) {
-                return res.status(404).send("User does not exist")
+                return res.status(404).send("User was not found")
             }
             if (user.favoriteMovies && !user.favoriteMovies.includes(req.params.movieId)) {
 
                 user.favoriteMovies.push(req.params.movieId)
                 user.save(() => {
-                    res.send(req.params.movieId + "Movie was added to Favorites")
+                    res.send(req.params.movieId + " Movie was added to Favorites")
 
                 })
             } else {
@@ -345,7 +345,7 @@ app.post("/users/:username/movies/:movieId", passport.authenticate('jwt',
 
 app.delete("/users/:username/movies/:movieId", passport.authenticate('jwt',
     {session: false}), (req, res) => {
-    Users.findOne(req.params.username)
+    Users.findOne({username: req.params.username})
         .then((user) => {
             if (!user) {
                 return res.status(404).send("User does not exist")
@@ -353,7 +353,7 @@ app.delete("/users/:username/movies/:movieId", passport.authenticate('jwt',
             if (user.favoriteMovies && user.favoriteMovies.includes(req.params.movieId)) {
                 user.favoriteMovies.remove(req.params.movieId)
                 user.save(() => {
-                    res.send(req.params.movieId + "Movie was removed from Favorites")
+                    res.send(req.params.movieId + " Movie was removed from Favorites")
                 })
             } else {
                 res.send("Movie was not found");
