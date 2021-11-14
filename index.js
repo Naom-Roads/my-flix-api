@@ -320,9 +320,9 @@ app.patch("/users/:username", passport.authenticate('jwt',
 
 // Allows users to add movie list
 
-app.post("/users/:userId/movies/:movieId", passport.authenticate('jwt',
+app.post("/users/:username/movies/:movieId", passport.authenticate('jwt',
     {session: false}), (req, res) => {
-    Users.findById(req.params.userId)
+    Users.findOne(req.params.username)
         .then((user) => {
             if (!user) {
                 return res.status(404).send("User does not exist")
@@ -343,9 +343,9 @@ app.post("/users/:userId/movies/:movieId", passport.authenticate('jwt',
 
 // Allows user to delete movie
 
-app.delete("/users/:userId/movies/:movieId", passport.authenticate('jwt',
+app.delete("/users/:username/movies/:movieId", passport.authenticate('jwt',
     {session: false}), (req, res) => {
-    Users.findById(req.params.userId)
+    Users.findOne(req.params.username)
         .then((user) => {
             if (!user) {
                 return res.status(404).send("User does not exist")
