@@ -2,20 +2,23 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
+
 const morgan = require("morgan");
 uuid = require("uuid");
 const mongoose = require("mongoose");
 const express = require("express");
 const Models = require("./models.js");
 
-
-const Movies = Models.Movie;
-const Users = Models.User;
-
 mongoose.connect(process.env.CONNECTION_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
+
+
+
+const Movies = Models.Movie;
+const Users = Models.User;
+
 
 const app = express();
 
