@@ -58,6 +58,8 @@ app.get("/apicalls", (req, res) => {
 // Get List of All Movies
 app.get("/movies", passport.authenticate('jwt', {session: false}), (req, res) => {
     Movies.find()
+        .populate("director")
+        .populate("genres", "","Genre")
         .then((movies) => {
             res.status(200).json(movies);
         })
@@ -74,7 +76,6 @@ app.get("/movies/:title", passport.authenticate('jwt',
         .then((movie) => {
             res.send(movie);
         });
-
 });
 
 // Gets data for one movie by id
