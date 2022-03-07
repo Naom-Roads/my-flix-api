@@ -310,13 +310,13 @@ app.patch("/users/:username", passport.authenticate('jwt',
                 })
                     .catch((err) => {
                         console.log(err);
-                        res.status(400).send("Error" + err);
+                        res.status(400).json("Error" + err);
                     })
             }
         })
         .catch((err) => {
             console.error(err);
-            res.status(500).send("Error: " + err);
+            res.status(500).json("Error: " + err);
         });
 });
 
@@ -334,11 +334,11 @@ app.post("/users/:username/movies/:movieId", passport.authenticate('jwt',
 
                 user.favoriteMovies.push(req.params.movieId)
                 user.save(() => {
-                    res.send(req.params.movieId + " Movie was added to Favorites")
+                    res.json({ data: req.params.movieId + " Movie was added to Favorites" })
 
                 })
             } else {
-                res.send("Movie is already added");
+                res.json({ data: "Movie is already added"});
             }
         });
 });
@@ -356,10 +356,10 @@ app.delete("/users/:username/movies/:movieId", passport.authenticate('jwt',
             if (user.favoriteMovies && user.favoriteMovies.includes(req.params.movieId)) {
                 user.favoriteMovies.remove(req.params.movieId)
                 user.save(() => {
-                    res.send(req.params.movieId + " Movie was removed from Favorites")
+                    res.json( { data: req.params.movieId + "Movie was removed from Favorites" });
                 })
             } else {
-                res.send("Movie was not found");
+                res.json({data: "Movie was not found"});
             }
         });
 });
@@ -371,9 +371,9 @@ app.delete("/users/:username", passport.authenticate('jwt',
     Users.findOneAndRemove({username: req.params.username})
         .then((user) => {
             if (!user) {
-                res.status(400).send(req.params.username + " was not found.");
+                res.status(400).json(req.params.username + " was not found.");
             } else {
-                res.send(req.params.username + " was deleted.");
+                res.json({ data: req.params.username + " was deleted."});
             }
         })
 });
