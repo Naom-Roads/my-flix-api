@@ -236,6 +236,8 @@ app.get("/users/:username/movies", passport.authenticate('jwt', {session: false}
     Users.findOne({username: req.params.username})
         .then((user) => {
             Movies.find({_id: {$in: user.favoriteMovies}})
+                .populate("director")
+                .populate("genres", "","Genre")
                 .then((movies) => {
                     res.status(200).json(movies);
                 })
