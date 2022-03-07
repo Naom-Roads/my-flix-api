@@ -302,7 +302,7 @@ app.patch("/users/:username", passport.authenticate('jwt',
     Users.findOne({username: req.params.username})
         .then((user) => {
             if (!user) {
-                res.status(400).send(req.params.username + " was not found");
+                res.status(400).json({ data: req.params.username + " was not found"});
             } else {
                 user.set(req.body);
                 user.save().then((updatedUser) => {
@@ -310,13 +310,13 @@ app.patch("/users/:username", passport.authenticate('jwt',
                 })
                     .catch((err) => {
                         console.log(err);
-                        res.status(400).json("Error" + err);
+                        res.status(400).json({ data: "Error" + err});
                     })
             }
         })
         .catch((err) => {
             console.error(err);
-            res.status(500).json("Error: " + err);
+            res.status(500).json({ data: "Error" + err});
         });
 });
 
