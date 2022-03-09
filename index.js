@@ -1,3 +1,20 @@
+/**
+ * @file This file sets up express application, the server and implements the various calls to the API endpoints.
+ * The Data use mongoose models to structure the data, that can be found in the models file.
+ * Access is established through authentication which is implemented using Passport and can be located in the
+ * passport file. Once connected the data is accessed via the MongoDB Atlas. The application is hosted on Heroku.
+ * @type {{DotenvParseOutput: DotenvParseOutput, DotenvParseOptions: DotenvParseOptions, parse: <T=DotenvParseOutput extends DotenvParseOutput>(src: (string | Buffer), options?: DotenvParseOptions) => T, DotenvConfigOptions: DotenvConfigOptions, DotenvConfigOutput: DotenvConfigOutput, config: (options?: DotenvConfigOptions) => DotenvConfigOutput, load: (options?: DotenvConfigOptions) => DotenvConfigOutput}}
+ * @requires express for creating the express application
+ * @requires morgan logger is middleware that will create logs for the requests
+ * @requires mongoose implements data schemas and the file can be found under ./models.js
+ * @requires cors allows server to indicate any origins other than it's own to permit loading requests
+ * @requires passport for authentication, this is implemented in ./auth.js
+ * @requires express-validator validates the data
+ *
+ */
+
+
+
 // app.METHOD(PATH, HANDLER)
 const dotenv = require("dotenv");
 dotenv.config();
@@ -43,7 +60,9 @@ app.use((err, req, res, next) => {
 });
 
 // Main Page
-
+/**
+ *
+ */
 
 app.get("/documentation", (req, res) => {
     res.sendFile("public/documentation.html", {root: __dirname});
@@ -59,7 +78,7 @@ app.get("/apicalls", (req, res) => {
 app.get("/movies", passport.authenticate('jwt', {session: false}), (req, res) => {
     Movies.find()
         .populate("director")
-        .populate("genres", "","Genre")
+        .populate("genres", "", "Genre")
         .then((movies) => {
             res.status(200).json(movies);
         })
@@ -237,7 +256,7 @@ app.get("/users/:username/movies", passport.authenticate('jwt', {session: false}
         .then((user) => {
             Movies.find({_id: {$in: user.favoriteMovies}})
                 .populate("director")
-                .populate("genres", "","Genre")
+                .populate("genres", "", "Genre")
                 .then((movies) => {
                     res.status(200).json(movies);
                 })
@@ -302,7 +321,7 @@ app.patch("/users/:username", passport.authenticate('jwt',
     Users.findOne({username: req.params.username})
         .then((user) => {
             if (!user) {
-                res.status(400).json({ data: req.params.username + " was not found"});
+                res.status(400).json({data: req.params.username + " was not found"});
             } else {
                 user.set(req.body);
                 user.save().then((updatedUser) => {
@@ -310,13 +329,13 @@ app.patch("/users/:username", passport.authenticate('jwt',
                 })
                     .catch((err) => {
                         console.log(err);
-                        res.status(400).json({ data: "Error" + err});
+                        res.status(400).json({data: "Error" + err});
                     })
             }
         })
         .catch((err) => {
             console.error(err);
-            res.status(500).json({ data: "Error" + err});
+            res.status(500).json({data: "Error" + err});
         });
 });
 
@@ -334,11 +353,11 @@ app.post("/users/:username/movies/:movieId", passport.authenticate('jwt',
 
                 user.favoriteMovies.push(req.params.movieId)
                 user.save(() => {
-                    res.json({ data: req.params.movieId + " Movie was added to Favorites" })
+                    res.json({data: req.params.movieId + " Movie was added to Favorites"})
 
                 })
             } else {
-                res.json({ data: "Movie is already added"});
+                res.json({data: "Movie is already added"});
             }
         });
 });
@@ -356,7 +375,7 @@ app.delete("/users/:username/movies/:movieId", passport.authenticate('jwt',
             if (user.favoriteMovies && user.favoriteMovies.includes(req.params.movieId)) {
                 user.favoriteMovies.remove(req.params.movieId)
                 user.save(() => {
-                    res.json( { data: req.params.movieId + "Movie was removed from Favorites" });
+                    res.json({data: req.params.movieId + "Movie was removed from Favorites"});
                 })
             } else {
                 res.json({data: "Movie was not found"});
@@ -373,7 +392,7 @@ app.delete("/users/:username", passport.authenticate('jwt',
             if (!user) {
                 res.status(400).json(req.params.username + " was not found.");
             } else {
-                res.json({ data: req.params.username + " was deleted."});
+                res.json({data: req.params.username + " was deleted."});
             }
         })
 });
